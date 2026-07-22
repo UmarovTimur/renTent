@@ -14,7 +14,12 @@ const SOCIALS = [
   { label: "YouTube", Icon: YoutubeIcon },
 ];
 
-const LEGAL = ["Manage cookies", "Cookie Policy", "Privacy policy", "Terms & conditions"];
+const LEGAL = [
+  "Управление cookie",
+  "Политика cookie",
+  "Политика конфиденциальности",
+  "Условия использования",
+];
 
 export function SiteFooter() {
   return (
@@ -28,27 +33,27 @@ export function SiteFooter() {
           as="h2"
           className="font-brand text-[clamp(2.5rem,8vw,7rem)] leading-[1.02]"
         >
-          Feel <span className="italic pr-[0.12em]">alive</span> in every footstep
+          Аренда туристического <span className="italic pr-[0.12em]">снаряжения</span> для гор
         </Reveal>
 
         <div className="mt-10 flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between">
           <p className="max-w-[34rem] font-text text-[clamp(1.05rem,1.4vw,1.35rem)] leading-[1.4] text-cream/80">
-            Gear up, step out, and make every moment in the mountains count. Your next
-            adventure is just a trail away!
+            Едете в горы под Ташкентом на выходные — снаряжение можно забрать в
+            день выезда и вернуть сразу после похода.
           </p>
           <ArrowButton
-            href="https://www.decathlon.com"
+            href="https://t.me/REPLACE_USERNAME"
             target="_blank"
             rel="noopener noreferrer"
             variant="light"
           >
-            Go to Decathlon
+            Написать в Telegram
           </ArrowButton>
         </div>
 
         {/* Socials */}
         <div className="mt-16 flex flex-col gap-4">
-          <span className="q-hand text-lg text-cream/80">Follow us</span>
+          <span className="q-hand text-lg text-cream/80">Мы в соцсетях</span>
           <div className="flex items-center gap-5">
             {SOCIALS.map(({ label, Icon }) => (
               <a
@@ -65,7 +70,7 @@ export function SiteFooter() {
 
         {/* Bottom bar */}
         <div className="mt-16 flex flex-col gap-4 border-t border-cream/15 py-8 text-sm text-cream/60 md:flex-row md:items-center md:justify-between">
-          <span>2025 © Decathlon — All rights reserved.</span>
+          <span>© 2025 Аренда туристического инвентаря. Ташкент.</span>
           <ul className="flex flex-wrap gap-x-6 gap-y-2">
             {LEGAL.map((item) => (
               <li key={item}>

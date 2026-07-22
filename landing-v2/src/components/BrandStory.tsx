@@ -2,9 +2,8 @@ import Image from "next/image";
 import { Reveal } from "@/components/Reveal";
 
 /**
- * Brand heritage — "Crafted in the heart of the French Alps" over a scenic
- * full-bleed image, with the "Since 1997" heritage note and Mountain Lab
- * location caption.
+ * Brand heritage — "Оригинальные бренды и понятные условия" over a scenic
+ * full-bleed image, with a heritage note and the Tashkent location caption.
  */
 export function BrandStory() {
   return (
@@ -13,7 +12,7 @@ export function BrandStory() {
       className="relative overflow-hidden bg-charcoal py-[16vh] text-cream"
     >
       <Image
-        src="/images/cover.jpg"
+        src="/images/rent/lifestyle-tent-shade.jpg"
         alt=""
         fill
         sizes="100vw"
@@ -27,30 +26,29 @@ export function BrandStory() {
           as="h2"
           className="max-w-[16em] font-display text-[clamp(2rem,5vw,4.6rem)] font-medium leading-[1.1]"
         >
-          Crafted in the heart of the French Alps. Here at Quechua, Decathlon&apos;s
-          mountain sports specialist, we&apos;ve been designing innovative performance
-          gear for over 25 years.
+          Оригинальные бренды, проверенное снаряжение и понятные условия — мы
+          готовим каждую вещь для гор так, будто идём в поход сами.
         </Reveal>
 
         <div className="mt-14 grid gap-8 lg:grid-cols-[auto_1fr] lg:gap-20">
-          <Reveal className="q-hand text-2xl text-cream/90">Since 1997</Reveal>
+          <Reveal className="q-hand text-2xl text-cream/90">Проверено в горах</Reveal>
           <Reveal
             as="p"
             delay={1}
             className="max-w-[46rem] font-text text-[clamp(1rem,1.3vw,1.2rem)] leading-[1.5] text-cream/85"
           >
-            Inspired by the rugged beauty of the French Alps, each piece in this collection
-            is crafted with the spirit of adventure in mind. We combine our deep
-            understanding of the mountains with cutting-edge technology to create gear that
-            endures even the toughest terrains. Every product is designed for you to get
-            the most out of your outdoor experiences, with every detail carefully
-            engineered to support your hiking or outdoor escapades.
+            Мы сдаём в аренду туристическое снаряжение для походов в горы,
+            кемпинга и пикников в Ташкенте и области — палатки на 4, 5 и 8
+            человек, спальные мешки, карематы, рюкзаки, треккинговые палки,
+            кухонное оборудование и кемпинговую мебель. Всё снаряжение — от
+            Naturehike, Jeep, Camel и FireMaple, в рабочем состоянии и
+            проверено перед каждой выдачей.
           </Reveal>
         </div>
       </div>
 
       <div className="absolute bottom-6 right-4 z-10 font-text text-sm tracking-wide text-cream/80 md:right-6">
-        Decathlon Mountain Lab  45,91616° N, 6,69121° E
+        🇺🇿 Узбекистан, город Ташкент 📍
       </div>
     </section>
   );

@@ -47,15 +47,15 @@ export interface Chapter {
 export const CHAPTERS: Chapter[] = [
   {
     index: 1,
-    navLabel: "Jackets",
+    navLabel: "Куртки",
     cover: {
-      headline: "Conquer new peaks",
+      headline: "Покоряй новые вершины",
       location: "Biescas  42,69724° N, 0,35672° O",
-      category: "MH500 Jacket",
+      category: "Куртка MH500",
       image: "/images/jacket/chapter-bg.jpg",
     },
     divider: {
-      title: "MH500 Jacket",
+      title: "Куртка MH500",
       cards: [
         "/images/intro/wide.jpg",
         "/images/intro/tracking.jpg",
@@ -64,63 +64,63 @@ export const CHAPTERS: Chapter[] = [
       ],
     },
     intro: {
-      heading: "Two jackets, one mountain spirit",
+      heading: "Две куртки, один горный дух",
       products: [
-        { code: "The MH500 Jacket", tagline: "A waterproof classic that’s built to last." },
+        { code: "Куртка MH500", tagline: "Водонепроницаемая классика, которая служит долго." },
         {
-          code: "The MH900 Jacket",
-          tagline: "Ultra-light, high-tech performance to gear up for the unexpected.",
+          code: "Куртка MH900",
+          tagline: "Сверхлёгкая, технологичная защита на случай непогоды.",
         },
       ],
     },
     products: [
       {
         code: "MH500",
-        tagline: "A waterproof classic that’s built to last.",
+        tagline: "Водонепроницаемая классика, которая служит долго.",
         detail:
-          "Engineered for explorers, the MH500 jacket combines top-tier performance with sleek design, keeping you ready for any adventure, rain or shine. Whether you’re hitting the trails or adding an outdoor edge to your everyday look, this jacket is built to keep you dry, comfortable and stylish whatever the weather.",
+          "Куртка MH500 создана для исследователей — сочетает в себе высокую производительность и лаконичный дизайн, готовая к любым приключениям в любую погоду. В горах или в городе — эта куртка держит вас сухими, комфортными и стильными.",
         packshot: "/images/jacket/mh500-black.jpg",
       },
       {
         code: "MH900",
-        tagline: "Ultra-light, high-tech performance to gear up for the unexpected.",
+        tagline: "Сверхлёгкая, технологичная защита на случай непогоды.",
         detail:
-          "The MH900 jacket isn’t just a rain protector, it’s the result of countless hours of design and testing to create the ultimate outdoor companion. With a sleek, balanced fit, the MH900 blends high-tech features with timeless design, ensuring it’s not only a piece of gear but a stylish go-to staple for every adventure.",
+          "Куртка MH900 — это не просто защита от дождя, а результат бесчисленных часов разработки и тестов, чтобы создать идеального спутника для гор. Сбалансированная посадка и технологичные материалы делают её незаменимой в любом походе.",
         packshot: "/images/jacket/mh900-black.jpg",
       },
     ],
     outfits: [
       {
-        audience: "Men",
+        audience: "Мужчинам",
         background: "/images/jacket/bg-men.jpg",
         variants: [
           {
             code: "MH500",
-            colorwayCount: "4 colorways",
+            colorwayCount: "4 расцветки",
             colorways: [
-              { name: "Black", swatch: "#2a2928", image: "/images/products/jacket/men/default/jacket-men-default-01.png" },
-              { name: "Slate grey", swatch: "#5b616b", image: "/images/products/jacket/men/variant/jacket-men-variant-01.png" },
+              { name: "Чёрный", swatch: "#2a2928", image: "/images/products/jacket/men/default/jacket-men-default-01.png" },
+              { name: "Сланцево-серый", swatch: "#5b616b", image: "/images/products/jacket/men/variant/jacket-men-variant-01.png" },
             ],
           },
           {
             code: "MH900",
-            colorwayCount: "2 colorways",
+            colorwayCount: "2 расцветки",
             colorways: [
-              { name: "Olive", swatch: "#7c7b53", image: "/images/products/jacket/men/default/jacket-men-default-03.png" },
+              { name: "Оливковый", swatch: "#7c7b53", image: "/images/products/jacket/men/default/jacket-men-default-03.png" },
             ],
           },
         ],
       },
       {
-        audience: "Women",
+        audience: "Женщинам",
         background: "/images/jacket/bg-women.jpg",
         variants: [
           {
             code: "MH500",
-            colorwayCount: "3 colorways",
+            colorwayCount: "3 расцветки",
             colorways: [
-              { name: "Beige", swatch: "#d8cbb0", image: "/images/products/jacket/women/default/jacket-women-default-01.png" },
-              { name: "Sweet purple", swatch: "#b3a3d1", image: "/images/products/jacket/women/variant/jacket-women-variant-01.png" },
+              { name: "Бежевый", swatch: "#d8cbb0", image: "/images/products/jacket/women/default/jacket-women-default-01.png" },
+              { name: "Нежно-фиолетовый", swatch: "#b3a3d1", image: "/images/products/jacket/women/variant/jacket-women-variant-01.png" },
             ],
           },
         ],
@@ -129,15 +129,15 @@ export const CHAPTERS: Chapter[] = [
   },
   {
     index: 2,
-    navLabel: "Shoes",
+    navLabel: "Обувь",
     cover: {
-      headline: "Step on up",
+      headline: "Шаг за шагом к вершине",
       location: "Bielsa  42,68233° N, 0,13052° E",
-      category: "MH500 Shoes",
+      category: "Обувь MH500",
       image: "/images/shoes/chapter-bg.jpg",
     },
     divider: {
-      title: "MH500 Shoes",
+      title: "Обувь MH500",
       cards: [
         "/images/shoes/detail-1.jpg",
         "/images/shoes/bg-men.jpg",
@@ -146,56 +146,56 @@ export const CHAPTERS: Chapter[] = [
       ],
     },
     intro: {
-      heading: "Let every step lead you to new horizons",
+      heading: "Пусть каждый шаг ведёт к новым горизонтам",
       products: [
-        { code: "The MH500 Light shoes", tagline: "Let every step lead you to new horizons." },
+        { code: "Обувь MH500 Light", tagline: "Пусть каждый шаг ведёт к новым горизонтам." },
         {
-          code: "Unique designs for bold adventurers",
-          tagline: "Stay tuned for the MH500 Light limited edition, crafted for hikers with flair.",
+          code: "Уникальный дизайн для смелых",
+          tagline: "Скоро: лимитированная серия MH500 Light для туристов со стилем.",
         },
       ],
     },
     products: [
       {
         code: "MH500 Light",
-        tagline: "Let every step lead you to new horizons.",
+        tagline: "Пусть каждый шаг ведёт к новым горизонтам.",
         detail:
-          "Ready to accompany you on all your adventures, these ultralight shoes are designed to deliver unmatched comfort, performance, and grip throughout your summer hikes. “The first thing that surprises you with the MH500 shoes is how comfortable it is. Your foot feels perfectly snug, and the precision-fit lacing along with the cushioned tongue mean you’re in full control.” — Florent, Product Manager",
+          "Готовы сопровождать вас в любых приключениях — эти сверхлёгкие ботинки созданы для непревзойдённого комфорта, сцепления и выносливости на летних маршрутах. Нога чувствует себя уверенно, а точная шнуровка и мягкий язычок дают полный контроль на любом рельефе.",
         packshot: "/images/shoes/le.png",
       },
       {
-        code: "Limited edition",
-        tagline: "Unique designs for bold adventurers.",
+        code: "Лимитированная серия",
+        tagline: "Уникальный дизайн для смелых искателей приключений.",
         detail:
-          "Stay tuned for the MH500 Light limited edition, crafted for hikers with flair. A distinctive design that turns every trail into a statement, without compromising on the comfort and grip you count on.",
+          "Скоро: лимитированная серия MH500 Light для туристов со стилем. Запоминающийся дизайн, который выделит вас на любой тропе, без потери комфорта и сцепления, на которые вы рассчитываете.",
         packshot: "/images/shoes/features.png",
       },
     ],
     outfits: [
       {
-        audience: "Men",
+        audience: "Мужчинам",
         background: "/images/shoes/bg-men.jpg",
         variants: [
           {
             code: "MH500 Light",
-            colorwayCount: "2 colorways",
+            colorwayCount: "2 расцветки",
             colorways: [
-              { name: "Khaki-Black", swatch: "#6b6a4f", image: "/images/products/shoes/men/default/shoes-men-default-01.png" },
-              { name: "Grey", swatch: "#9aa0a6", image: "/images/products/shoes/men/default/shoes-men-default-03.png" },
+              { name: "Хаки-чёрный", swatch: "#6b6a4f", image: "/images/products/shoes/men/default/shoes-men-default-01.png" },
+              { name: "Серый", swatch: "#9aa0a6", image: "/images/products/shoes/men/default/shoes-men-default-03.png" },
             ],
           },
         ],
       },
       {
-        audience: "Women",
+        audience: "Женщинам",
         background: "/images/shoes/bg-women.jpg",
         variants: [
           {
             code: "MH500 Light",
-            colorwayCount: "2 colorways",
+            colorwayCount: "2 расцветки",
             colorways: [
-              { name: "Purple-Orange", swatch: "#8a6f9e", image: "/images/products/shoes/women/default/shoes-women-default-01.png" },
-              { name: "Blue", swatch: "#7d93b8", image: "/images/products/shoes/women/default/shoes-women-default-03.png" },
+              { name: "Фиолетово-оранжевый", swatch: "#8a6f9e", image: "/images/products/shoes/women/default/shoes-women-default-01.png" },
+              { name: "Синий", swatch: "#7d93b8", image: "/images/products/shoes/women/default/shoes-women-default-03.png" },
             ],
           },
         ],
@@ -204,15 +204,15 @@ export const CHAPTERS: Chapter[] = [
   },
   {
     index: 3,
-    navLabel: "Backpack",
+    navLabel: "Рюкзаки",
     cover: {
-      headline: "Outdoor spirit",
+      headline: "Дух приключений",
       location: "Estadilla  42,04948° N, 0,30224° E",
-      category: "MH500 Backpack",
+      category: "Рюкзак MH500",
       image: "/images/backpack/chapter-bg.jpg",
     },
     divider: {
-      title: "MH500 Backpack",
+      title: "Рюкзак MH500",
       cards: [
         "/images/backpack/bg-25l.jpg",
         "/images/backpack/bg-38l.jpg",
@@ -221,47 +221,47 @@ export const CHAPTERS: Chapter[] = [
       ],
     },
     intro: {
-      heading: "Your journey, lightened",
+      heading: "Ваш путь налегке",
       products: [
-        { code: "The MH500 Backpack", tagline: "For lightweight hikes." },
-        { code: "The MH500 Backpack", tagline: "Your journey, lightened." },
+        { code: "Рюкзак MH500", tagline: "Для лёгких походов." },
+        { code: "Рюкзак MH500", tagline: "Ваш путь налегке." },
       ],
     },
     products: [
       {
         code: "25L",
-        tagline: "For lightweight hikes.",
+        tagline: "Для лёгких походов.",
         detail:
-          "Crafted for the modern explorer, the MH500 backpack blends timeless style with cutting-edge technology and lightweight performance. Built to handle every adventure, from the trail to the city, it’s available in a range of colors and designed for a lifetime of use. Not only is it made to last, it’s also easy to repair, making it the ultimate companion.",
+          "Рюкзак MH500 создан для современного исследователя — сочетает лаконичный стиль, передовые технологии и лёгкий вес. Готов к любым приключениям, от тропы до города, доступен в разных цветах и рассчитан на долгий срок службы. Его легко починить, что делает его надёжным спутником на годы.",
         packshot: "/images/backpack/25l.png",
       },
       {
         code: "38L",
-        tagline: "Your journey, lightened.",
+        tagline: "Ваш путь налегке.",
         detail:
-          "Designed for longer adventures, the MH500 38L backpack is the perfect companion for hikers needing extra capacity without sacrificing comfort. With its spacious design and smart storage solutions, it’s ideal for family hikes and overnight stays in mountain huts. Available in a range of colors, so you can choose the right style for your adventures.",
+          "Рюкзак MH500 38L создан для более длительных походов — идеальный спутник для тех, кому нужен дополнительный объём без потери комфорта. Просторный и продуманный, он отлично подходит для семейных походов и ночёвок в горных приютах. Доступен в разных цветах, чтобы выбрать стиль под себя.",
         packshot: "/images/backpack/38l.png",
       },
     ],
     outfits: [
       {
-        audience: "Unisex",
+        audience: "Унисекс",
         background: "/images/backpack/bg-25l.jpg",
         variants: [
           {
             code: "25L",
-            colorwayCount: "5 colorways",
+            colorwayCount: "5 расцветок",
             colorways: [
-              { name: "Copper brown", swatch: "#9c6b4f", image: "/images/products/backpack/men/default/backpack-men-default-01.png" },
-              { name: "Mangrove Khaki", swatch: "#5f6350", image: "/images/products/backpack/men/variant/backpack-men-variant-01.png" },
+              { name: "Медно-коричневый", swatch: "#9c6b4f", image: "/images/products/backpack/men/default/backpack-men-default-01.png" },
+              { name: "Хаки", swatch: "#5f6350", image: "/images/products/backpack/men/variant/backpack-men-variant-01.png" },
             ],
           },
           {
             code: "38L",
-            colorwayCount: "4 colorways",
+            colorwayCount: "4 расцветки",
             colorways: [
-              { name: "Copper brown", swatch: "#9c6b4f", image: "/images/products/backpack/men/default/backpack-men-default-03.png" },
-              { name: "Mangrove Khaki", swatch: "#5f6350", image: "/images/products/backpack/men/variant/backpack-men-variant-03.png" },
+              { name: "Медно-коричневый", swatch: "#9c6b4f", image: "/images/products/backpack/men/default/backpack-men-default-03.png" },
+              { name: "Хаки", swatch: "#5f6350", image: "/images/products/backpack/men/variant/backpack-men-variant-03.png" },
             ],
           },
         ],

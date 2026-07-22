@@ -6,13 +6,21 @@ import { useLenis } from "lenis/react";
 import { HandArrowLong, HandArrowSmall } from "@/components/icons";
 import { cn } from "@/lib/utils";
 
+// Total time the loader occupies the screen, plus its own slide-up exit —
+// exported so other components (header, hero) can time their entrance to
+// play *after* the loader has actually left, not underneath it.
+export const PRELOADER_COUNT_MS = 2400;
+export const PRELOADER_TOTAL_MS = PRELOADER_COUNT_MS + 320;
+export const PRELOADER_EXIT_MS = 700;
+export const PRELOADER_REVEAL_MS = PRELOADER_TOTAL_MS + PRELOADER_EXIT_MS;
+
 /** Cinematic film stills that pop in (small → full) as loading progresses,
  *  each at its own rotation, stacked in the centre. `at` = % threshold. */
 const LOADER_IMAGES = [
-  { src: "/images/loader/loader-01.jpg", rotate: -9, dx: -46, dy: -6, at: 6 },
-  { src: "/images/loader/loader-02.jpg", rotate: 7, dx: 40, dy: -28, at: 30 },
-  { src: "/images/loader/loader-03.jpg", rotate: -6, dx: -26, dy: 30, at: 55 },
-  { src: "/images/loader/loader-04.jpg", rotate: 11, dx: 46, dy: 18, at: 78 },
+  { src: "/images/rent/card-tent-8.jpg", rotate: -9, dx: -46, dy: -6, at: 6 },
+  { src: "/images/rent/card-sleepingbag.jpg", rotate: 7, dx: 40, dy: -28, at: 30 },
+  { src: "/images/rent/card-backpack.jpg", rotate: -6, dx: -26, dy: 30, at: 55 },
+  { src: "/images/rent/card-cookset.jpg", rotate: 11, dx: 46, dy: 18, at: 78 },
 ];
 
 /**
@@ -26,10 +34,9 @@ export function Preloader() {
 
   useEffect(() => {
     const start = performance.now();
-    const duration = 2400;
     let raf = 0;
     const tick = (now: number) => {
-      const t = Math.min((now - start) / duration, 1);
+      const t = Math.min((now - start) / PRELOADER_COUNT_MS, 1);
       const eased = 1 - Math.pow(1 - t, 3); // ease-out
       setPct(Math.round(eased * 100));
       if (t < 1) raf = requestAnimationFrame(tick);
@@ -39,7 +46,7 @@ export function Preloader() {
     const finish = setTimeout(() => {
       setPct(100);
       setDone(true);
-    }, duration + 320);
+    }, PRELOADER_TOTAL_MS);
     return () => {
       cancelAnimationFrame(raf);
       clearTimeout(finish);
@@ -98,15 +105,15 @@ export function Preloader() {
         })}
       </div>
 
-      {/* Quechua Spirit — upper right */}
+      {/* Mountain spirit — upper right */}
       <div className="q-hand absolute right-[22%] top-[28%] z-10 text-lg text-charcoal/40">
-        <span className="-rotate-6 inline-block">Quechua spirit</span>
+        <span className="-rotate-6 inline-block">Дух гор</span>
         <HandArrowSmall className="mt-1 h-8 w-7 translate-x-6 text-charcoal/40" />
       </div>
 
-      {/* Our new collection — center left */}
+      {/* New season — center left */}
       <div className="q-hand absolute left-[26%] top-[52%] z-10 text-lg text-charcoal/40">
-        <span className="-rotate-6 inline-block">Our new collection 2025</span>
+        <span className="-rotate-6 inline-block">Сезон 2026 уже здесь</span>
         <HandArrowLong className="mt-1 h-9 w-12 translate-x-16 text-charcoal/40" />
       </div>
 

@@ -12,14 +12,14 @@ export function IntroSection() {
       data-header-theme="light"
       className="relative overflow-hidden bg-cream py-[12vh] text-charcoal"
     >
-      <div className="q-container">
+      <div className="px-10">
         {/* Manifesto */}
         <Reveal
           as="h2"
           className="max-w-[65rem] font-display text-[clamp(1.9rem,4vw,3.65rem)] font-medium leading-[1.15]"
         >
-          Our new hiking collection is the ultimate invitation to explore the great
-          outdoors, where cutting-edge technology meets contemporary style.
+          Снаряжение для гор, которое не нужно покупать — оплата только при получении,
+          без затрат на инвентарь, который круглый год пылится дома.
         </Reveal>
 
         {/* Trail region */}
@@ -45,20 +45,20 @@ export function IntroSection() {
             {/* Body paragraph — upper left */}
             <Reveal className="lg:col-span-5 lg:col-start-3 lg:pt-24">
               <p className="max-w-[34rem] font-text text-[clamp(1.05rem,1.35vw,1.35rem)] leading-[1.32]">
-                Designed in the heart of the French Alps and crafted with hikers in
-                mind, our latest collection combines technical performance with modern
-                aesthetics, ensuring you look and feel your best on every trail. Embrace
-                the wonders of hiking and elevate your outdoor experience, where every
-                step inspires a deeper connection to the mountains.
+                Чаще всего у нас берут снаряжение перед выездом в Чимган, Бельдерсай,
+                Чарвак и Чаткальский хребет — туда, где не всегда есть смысл тащить с
+                собой палатку и спальник на весь сезон. Взять напрокат на выходные
+                выходит дешевле, чем покупать снаряжение, которым вы воспользуетесь
+                два-три раза в год.
               </p>
             </Reveal>
 
             {/* Card A — portrait, top right */}
             <Reveal className="lg:col-span-4 lg:col-start-9 lg:pt-4" delay={1}>
-              <div className="relative aspect-[573/716] w-full overflow-hidden rounded-2xl lg:mx-auto lg:max-w-[26rem]">
+              <div className="relative aspect-[3/4] w-full overflow-hidden rounded-2xl lg:mx-auto lg:max-w-[26rem]">
                 <Image
-                  src="/images/intro/tracking.jpg"
-                  alt="Hiker resting on a rock in the mountains"
+                  src="/images/rent/lifestyle-hikers-dusk.jpg"
+                  alt="Туристы с рюкзаками в горах"
                   fill
                   sizes="(max-width: 1024px) 100vw, 26rem"
                   className="object-cover"
@@ -70,8 +70,8 @@ export function IntroSection() {
             <Reveal className="lg:col-span-3 lg:col-start-2 lg:row-start-2 lg:-mt-24" delay={2}>
               <div className="relative aspect-square w-full overflow-hidden rounded-2xl lg:max-w-[21rem]">
                 <Image
-                  src="/images/intro/card-6.jpg"
-                  alt="Detail of a Quechua hiking jacket"
+                  src="/images/rent/lifestyle-burner-stream.jpg"
+                  alt="Горелка для приготовления еды в походе"
                   fill
                   sizes="(max-width: 1024px) 100vw, 21rem"
                   className="object-cover"
@@ -86,8 +86,8 @@ export function IntroSection() {
             >
               <div className="relative aspect-[573/378] w-full overflow-hidden rounded-2xl lg:mx-auto lg:max-w-[38rem]">
                 <Image
-                  src="/images/intro/wide.jpg"
-                  alt="Hikers walking through an alpine valley"
+                  src="/images/rent/lifestyle-camp-table.jpg"
+                  alt="Кемпинговая мебель на природе"
                   fill
                   sizes="(max-width: 1024px) 100vw, 38rem"
                   className="object-cover"

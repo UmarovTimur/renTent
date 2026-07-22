@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useLenis } from "lenis/react";
 import { LogoIcon, DragHandleIcon, ChevronRightIcon } from "@/components/icons";
+import { PRELOADER_REVEAL_MS } from "@/components/Preloader";
 import { cn } from "@/lib/utils";
 
 interface MenuItem {
@@ -13,13 +14,13 @@ interface MenuItem {
 }
 
 const MENU: MenuItem[] = [
-  { label: "Overview", target: "top", thumb: "/images/jacket/panoplie.png" },
-  { label: "Jackets", target: "chapter-1", thumb: "/images/jacket/menu.png" },
-  { label: "Shoes", target: "chapter-2", thumb: "/images/shoes/menu.png" },
-  { label: "Backpacks", target: "chapter-3", thumb: "/images/backpack/menu.png" },
+  { label: "Меню", target: "top", thumb: "/images/jacket/panoplie.png" },
+  { label: "Палатки", target: "chapter-1", thumb: "/images/jacket/menu.png" },
+  { label: "Спальники", target: "chapter-2", thumb: "/images/shoes/menu.png" },
+  { label: "Рюкзаки", target: "chapter-3", thumb: "/images/backpack/menu.png" },
 ];
 
-const LANGUAGES = ["English", "Français", "Español", "Deutsch", "Italiano"];
+const LANGUAGES = ["Русский", "English", "Français", "Español", "Deutsch"];
 
 /**
  * Fixed overlay header. Left: a section menu whose pill shows the active
@@ -32,10 +33,18 @@ export function SiteHeader() {
   const [dark, setDark] = useState(true); // true = light text (over dark bg)
   const [menuOpen, setMenuOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
-  const [lang, setLang] = useState("English");
+  const [lang, setLang] = useState("Русский");
+  const [visible, setVisible] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const langRef = useRef<HTMLDivElement>(null);
   const lenis = useLenis();
+
+  // Slide down only once the preloader has fully exited (not just started
+  // exiting) — otherwise the header's own entrance plays hidden underneath it.
+  useEffect(() => {
+    const t = setTimeout(() => setVisible(true), PRELOADER_REVEAL_MS);
+    return () => clearTimeout(t);
+  }, []);
 
   useEffect(() => {
     const onScroll = () => {
@@ -94,8 +103,9 @@ export function SiteHeader() {
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-50 flex items-start justify-between px-4 py-4 transition-colors duration-500 md:px-6 md:py-5",
+        "fixed inset-x-0 top-0 z-50 flex items-start justify-between px-4 py-4 transition-[color,transform,opacity] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] md:px-6 md:py-5",
         dark ? "text-cream" : "text-charcoal",
+        visible ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0",
       )}
     >
       {/* Left: section menu */}
@@ -113,7 +123,7 @@ export function SiteHeader() {
           )}
         >
           <span className="min-w-[4.5rem] text-left font-display leading-none">
-            {MENU[activeIdx]?.label ?? "Overview"}
+            {MENU[activeIdx]?.label ?? "Обзор"}
           </span>
           <DragHandleIcon className="h-4 w-2.5 opacity-70" />
         </button>
@@ -160,7 +170,7 @@ export function SiteHeader() {
         }}
         className="absolute left-1/2 top-4 -translate-x-1/2 md:top-5"
       >
-        <LogoIcon className="h-[26px] w-[136px]" />
+        <LogoIcon className="h-[22px] w-auto" />
       </a>
 
       {/* Right: language switcher */}

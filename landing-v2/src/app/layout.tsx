@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { SmoothScroll } from "@/components/SmoothScroll";
 
+const inter = Inter({ subsets: ["latin", "cyrillic"], variable: "--font-inter" });
+
 export const metadata: Metadata = {
-  title: "The New Quechua Collection - SS25 Lookbook",
+  title: "Аренда туристического снаряжения — Ташкент",
   description:
-    "Feel alive in every footstep. Discover the new Quechua SS25 hiking collection — jackets, shoes and backpacks crafted in the heart of the French Alps.",
+    "Снаряжение для гор, которое не нужно покупать. Оплата только при получении — палатки, спальные мешки, рюкзаки и треккинговые палки в аренду в Ташкенте.",
   metadataBase: new URL("https://quechua-lookbook.com"),
   icons: {
     icon: [
@@ -15,8 +18,8 @@ export const metadata: Metadata = {
     apple: "/seo/apple-touch-icon.png",
   },
   openGraph: {
-    title: "The New Quechua Collection - SS25 Lookbook",
-    description: "Feel alive in every footstep.",
+    title: "Аренда туристического снаряжения — Ташкент",
+    description: "Снаряжение для гор, которое не нужно покупать.",
     images: ["/seo/og.jpg"],
     type: "website",
   },
@@ -28,7 +31,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full antialiased">
+    <html lang="ru" className={`h-full antialiased ${inter.variable}`}>
       <body className="min-h-full bg-cream text-charcoal">
         <SmoothScroll>{children}</SmoothScroll>
       </body>

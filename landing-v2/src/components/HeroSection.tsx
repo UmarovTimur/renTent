@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { PlayIcon } from "@/components/icons";
+import { Play } from "lucide-react";
 import { PRELOADER_REVEAL_MS } from "@/components/Preloader";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
@@ -58,6 +58,7 @@ export function HeroSection() {
 
       {/* Discover full video card */}
       <button
+        style={{ display: "none" }}
         type="button"
         onClick={() => setOpen(true)}
         className={cn(
@@ -75,17 +76,18 @@ export function HeroSection() {
           полное видео
         </span>
         <span className="flex h-9 w-9 items-center justify-center rounded-full border border-charcoal/30 transition-colors group-hover:bg-charcoal group-hover:text-cream">
-          <PlayIcon className="h-3.5 w-2.5 translate-x-px" />
+          <Play fill="currentColor" strokeWidth={0} className="h-3.5 w-3.5 translate-x-px" />
         </span>
       </button>
 
       {/* Full video modal */}
-      {open && (
-        <div
-          className="fixed inset-0 z-[110] flex items-center justify-center bg-charcoal/90 p-6"
-          onClick={() => setOpen(false)}
-        >
-          {/* <video
+      {
+        open && (
+          <div
+            className="fixed inset-0 z-[110] flex items-center justify-center bg-charcoal/90 p-6"
+            onClick={() => setOpen(false)}
+          >
+            {/* <video
             className="max-h-full w-auto max-w-full rounded-xl"
             src="/videos/full-video.mp4"
             autoPlay
@@ -93,16 +95,17 @@ export function HeroSection() {
             playsInline
             onClick={(e) => e.stopPropagation()}
           /> */}
-          <Image src="/images/hero-bg.jpg" alt="" fill sizes="100vw" className="object-contain p-1 max-h-full w-auto max-w-full rounded-xl" />
-          <button
-            type="button"
-            className="absolute right-6 top-6 text-cream text-2xl"
-            aria-label="Закрыть"
-          >
-            ✕
-          </button>
-        </div>
-      )}
-    </section>
+            <Image src="/images/hero-bg.jpg" alt="" fill sizes="100vw" className="object-contain p-1 max-h-full w-auto max-w-full rounded-xl" />
+            <button
+              type="button"
+              className="absolute right-6 top-6 text-cream text-2xl"
+              aria-label="Закрыть"
+            >
+              ✕
+            </button>
+          </div>
+        )
+      }
+    </section >
   );
 }

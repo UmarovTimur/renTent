@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { ArrowRightIcon } from "@/components/icons";
+import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface ArrowButtonProps {
@@ -63,7 +63,10 @@ export function ArrowButton({
           colors,
         )}
       >
-        <ArrowRightIcon className="h-[38%] w-[38%] -translate-x-[160%] transition-transform delay-150 duration-[800ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:translate-x-0" />
+        <ArrowRight
+          strokeWidth={2.25}
+          className="h-[38%] w-[38%] -translate-x-[160%] transition-transform delay-150 duration-[800ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:translate-x-0"
+        />
       </span>
     </>
   );

@@ -107,7 +107,7 @@ export function Preloader() {
 
       {/* Mountain spirit — upper right */}
       <div className="q-hand absolute right-[22%] top-[28%] z-10 text-lg text-charcoal/40">
-        <span className="-rotate-6 inline-block">Дух гор</span>
+        <span className="-rotate-6 inline-block">Быстрая Аренда</span>
         <HandArrowSmall className="mt-1 h-8 w-7 translate-x-6 text-charcoal/40" />
       </div>
 

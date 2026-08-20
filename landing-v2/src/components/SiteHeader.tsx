@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useLenis } from "lenis/react";
-import { LogoIcon, DragHandleIcon, ChevronRightIcon } from "@/components/icons";
+import { GripVertical } from "lucide-react";
+import { LogoIcon } from "@/components/icons";
 import { PRELOADER_REVEAL_MS } from "@/components/Preloader";
 import { cn } from "@/lib/utils";
 
@@ -15,28 +16,23 @@ interface MenuItem {
 
 const MENU: MenuItem[] = [
   { label: "Меню", target: "top", thumb: "/images/jacket/panoplie.png" },
-  { label: "Палатки", target: "chapter-1", thumb: "/images/jacket/menu.png" },
+  { label: "Палатки", target: "chapter-1", thumb: "/images/tent/tent_header_icon.png" },
   { label: "Спальники", target: "chapter-2", thumb: "/images/shoes/menu.png" },
   { label: "Рюкзаки", target: "chapter-3", thumb: "/images/backpack/menu.png" },
 ];
 
-const LANGUAGES = ["Русский", "English", "Français", "Español", "Deutsch"];
-
 /**
  * Fixed overlay header. Left: a section menu whose pill shows the active
  * chapter and expands to a thumbnail list that smooth-scrolls to each section.
- * Right: a language switcher. The bar switches light/dark treatment based on
- * the section beneath it (`data-header-theme`).
+ * The bar switches light/dark treatment based on the section beneath it
+ * (`data-header-theme`).
  */
 export function SiteHeader() {
   const [activeIdx, setActiveIdx] = useState(0);
   const [dark, setDark] = useState(true); // true = light text (over dark bg)
   const [menuOpen, setMenuOpen] = useState(false);
-  const [langOpen, setLangOpen] = useState(false);
-  const [lang, setLang] = useState("Русский");
   const [visible, setVisible] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
-  const langRef = useRef<HTMLDivElement>(null);
   const lenis = useLenis();
 
   // Slide down only once the preloader has fully exited (not just started
@@ -67,16 +63,14 @@ export function SiteHeader() {
     };
   }, []);
 
-  // close dropdowns on outside click / Escape
+  // close dropdown on outside click / Escape
   useEffect(() => {
     const onDown = (e: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) setMenuOpen(false);
-      if (langRef.current && !langRef.current.contains(e.target as Node)) setLangOpen(false);
     };
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setMenuOpen(false);
-        setLangOpen(false);
       }
     };
     document.addEventListener("mousedown", onDown);
@@ -112,10 +106,7 @@ export function SiteHeader() {
       <div ref={menuRef} className="relative">
         <button
           type="button"
-          onClick={() => {
-            setMenuOpen((o) => !o);
-            setLangOpen(false);
-          }}
+          onClick={() => setMenuOpen((o) => !o)}
           aria-expanded={menuOpen}
           className={cn(
             "flex items-center gap-3 rounded-full px-4 py-2.5 text-lg backdrop-blur-md transition-colors duration-300",
@@ -125,7 +116,7 @@ export function SiteHeader() {
           <span className="min-w-[4.5rem] text-left font-display leading-none">
             {MENU[activeIdx]?.label ?? "Обзор"}
           </span>
-          <DragHandleIcon className="h-4 w-2.5 opacity-70" />
+          <GripVertical className="h-4 w-2.5 opacity-70" />
         </button>
 
         {/* Dropdown */}
@@ -173,58 +164,8 @@ export function SiteHeader() {
         <LogoIcon className="h-[22px] w-auto" />
       </a>
 
-      {/* Right: language switcher */}
-      <div ref={langRef} className="relative">
-        <button
-          type="button"
-          onClick={() => {
-            setLangOpen((o) => !o);
-            setMenuOpen(false);
-          }}
-          aria-expanded={langOpen}
-          className={cn(
-            "flex items-center gap-1.5 rounded-full px-4 py-2.5 text-lg font-display leading-none backdrop-blur-md transition-colors duration-300",
-            dark ? "bg-white/10 hover:bg-white/15" : "bg-charcoal/8 hover:bg-charcoal/15",
-          )}
-        >
-          {lang}
-          <ChevronRightIcon
-            className={cn(
-              "h-3 w-2 opacity-80 transition-transform duration-300",
-              langOpen ? "-rotate-90" : "rotate-90",
-            )}
-          />
-        </button>
-
-        <div
-          className={cn(
-            "absolute right-0 top-[calc(100%+0.5rem)] w-44 origin-top-right overflow-hidden rounded-2xl bg-charcoal/85 p-2 text-cream shadow-xl backdrop-blur-xl transition-all duration-300",
-            langOpen
-              ? "pointer-events-auto scale-100 opacity-100"
-              : "pointer-events-none scale-95 opacity-0",
-          )}
-        >
-          {LANGUAGES.map((l) => (
-            <button
-              key={l}
-              type="button"
-              onClick={() => {
-                setLang(l);
-                setLangOpen(false);
-              }}
-              className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-left font-display text-base transition-colors duration-200 hover:bg-cream/10"
-            >
-              {l}
-              <span
-                className={cn(
-                  "h-1.5 w-1.5 rounded-full bg-cream transition-opacity",
-                  l === lang ? "opacity-100" : "opacity-0",
-                )}
-              />
-            </button>
-          ))}
-        </div>
-      </div>
+      {/* Right: language switcher (hidden for now) */}
+      <div className="h-[42px] w-[42px]" aria-hidden />
     </header>
   );
 }

@@ -1,7 +1,8 @@
 import type { SVGProps } from "react";
 
-/* Extracted from the Quechua SS25 lookbook. All use currentColor so they
-   inherit text color. Sizing via className (width/height utilities). */
+/* Brand marks (wordmark, socials) and the hand-drawn illustration arrows —
+   the rest of the UI uses lucide-react. All use currentColor so they inherit
+   text color. Sizing via className (width/height utilities). */
 
 export function LogoIcon(props: SVGProps<SVGSVGElement>) {
   return (
@@ -25,58 +26,6 @@ export function LogoIcon(props: SVGProps<SVGSVGElement>) {
           <rect width="385" height="157" fill="currentColor" />
         </clipPath>
       </defs>
-    </svg>
-  );
-}
-
-export function PlayIcon(props: SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 9 12" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-      <path
-        d="M7.91579 6.27723L0.850021 10.9877C0.696847 11.0898 0.489887 11.0484 0.387767 10.8953C0.351267 10.8405 0.331787 10.7762 0.331787 10.7104L0.331787 1.28939C0.331787 1.10529 0.481027 0.956055 0.66512 0.956055C0.730927 0.956055 0.795267 0.975535 0.850021 1.01203L7.91579 5.7225C8.06892 5.82463 8.11035 6.03163 8.00822 6.18476C7.98341 6.22194 7.95297 6.25239 7.91579 6.27723Z"
-        fill="currentColor"
-      />
-    </svg>
-  );
-}
-
-export function PauseIcon(props: SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 10 12" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-      <path
-        d="M0 0.166504H1.66667V11.8332H0V0.166504ZM8.33333 0.166504H10V11.8332H8.33333V0.166504Z"
-        fill="currentColor"
-      />
-    </svg>
-  );
-}
-
-export function ArrowRightIcon(props: SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-      <path
-        d="M10.4763 5.51914L6.00631 1.15151L7.18481 0L13.6666 6.33338L7.18481 12.6667L6.00631 11.5152L10.4763 7.14763H0.333313V5.51914H10.4763Z"
-        fill="currentColor"
-      />
-    </svg>
-  );
-}
-
-export function ChevronRightIcon(props: SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-      <path
-        d="M5.17244 7.0007L0.222656 2.05093L1.63688 0.636719L8.00084 7.0007L1.63688 13.3646L0.222656 11.9504L5.17244 7.0007Z"
-        fill="currentColor"
-      />
-    </svg>
-  );
-}
-
-export function PlusIcon(props: SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-      <path d="M6 6V0H8V6H14V8H8V14H6V8H0V6H6Z" fill="currentColor" />
     </svg>
   );
 }
@@ -120,21 +69,6 @@ export function HandArrowSmall(props: SVGProps<SVGSVGElement>) {
   );
 }
 
-export function DragHandleIcon(props: SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-      <g fill="currentColor">
-        <circle cx="2.5" cy="3" r="1.4" />
-        <circle cx="7.5" cy="3" r="1.4" />
-        <circle cx="2.5" cy="8" r="1.4" />
-        <circle cx="7.5" cy="8" r="1.4" />
-        <circle cx="2.5" cy="13" r="1.4" />
-        <circle cx="7.5" cy="13" r="1.4" />
-      </g>
-    </svg>
-  );
-}
-
 export function InstagramIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
@@ -145,33 +79,13 @@ export function InstagramIcon(props: SVGProps<SVGSVGElement>) {
   );
 }
 
-export function FacebookIcon(props: SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-      <path
-        d="M12.9024 18.5V11.5344H15.2347L15.5838 8.8265H12.9024V7.09765C12.9024 6.31364 13.12 5.77934 14.2443 5.77934L15.6783 5.77867V3.35676C15.4302 3.32382 14.5791 3.25006 13.5888 3.25006C11.5213 3.25006 10.106 4.51198 10.106 6.82952V8.8265H7.7677V11.5344H10.106V18.5H1.5C0.94772 18.5 0.5 18.0523 0.5 17.5V1.5C0.5 0.94772 0.94772 0.5 1.5 0.5H17.5C18.0523 0.5 18.5 0.94772 18.5 1.5V17.5C18.5 18.0523 18.0523 18.5 17.5 18.5H12.9024Z"
-        fill="currentColor"
-      />
-    </svg>
-  );
-}
-
-export function TiktokIcon(props: SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 19 21" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-      <path
-        d="M13.5 6.74537V14C13.5 17.5899 10.5899 20.5 7 20.5C3.41015 20.5 0.5 17.5899 0.5 14C0.5 10.4101 3.41015 7.5 7 7.5C7.5163 7.5 8.0185 7.56019 8.5 7.67393V10.8368C8.0454 10.6208 7.5368 10.5 7 10.5C5.067 10.5 3.5 12.067 3.5 14C3.5 15.933 5.067 17.5 7 17.5C8.933 17.5 10.5 15.933 10.5 14V0.5H13.5C13.5 3.26142 15.7386 5.5 18.5 5.5V8.5C16.6115 8.5 14.8693 7.85332 13.5 6.74537Z"
-        fill="currentColor"
-      />
-    </svg>
-  );
-}
-
-export function YoutubeIcon(props: SVGProps<SVGSVGElement>) {
+export function TelegramIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-      <rect x="1.5" y="5" width="21" height="14" rx="4" stroke="currentColor" strokeWidth="1.6" />
-      <path d="M10 8.8L15 12L10 15.2V8.8Z" fill="currentColor" />
+      <path
+        d="M21.05 3.487a1.2 1.2 0 0 1 1.685 1.276l-2.72 15.6a1.2 1.2 0 0 1-1.804.79l-4.86-3.28-2.33 2.406a1.05 1.05 0 0 1-1.803-.68l-.31-4.207-4.897-1.94a1.14 1.14 0 0 1 .052-2.144L21.05 3.487Zm-3.32 3.32L8.53 12.66l.19 3.02 1.98-2.05 5.02-6.822Z"
+        fill="currentColor"
+      />
     </svg>
   );
 }

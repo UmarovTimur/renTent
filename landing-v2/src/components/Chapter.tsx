@@ -10,8 +10,8 @@ import type { Chapter as ChapterData, Outfit } from "@/data/chapters";
 export function Chapter({ data }: { data: ChapterData }) {
   return (
     <div data-chapter={data.index}>
-      <ChapterCover data={data} />
-      <CategoryDivider title={data.divider.title} cards={data.divider.cards} index={data.index} />
+      {/* <ChapterCover data={data} /> */}
+      {/* <CategoryDivider title={data.divider.title} cards={data.divider.cards} index={data.index} /> */}
       <div className="q-container">
         <ProductFeature data={data} />
       </div>
@@ -297,7 +297,13 @@ function CategoryDivider({
               style={{ willChange: "transform, opacity" }}
             >
               <div className="relative aspect-[4/5] w-full">
-                <Image src={src} alt="" fill sizes="16rem" className="object-cover" />
+                <Image
+                  src={src}
+                  alt={`${title} — фото ${i + 1}`}
+                  fill
+                  sizes="16rem"
+                  className="object-cover"
+                />
               </div>
             </div>
           ))}

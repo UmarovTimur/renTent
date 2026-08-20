@@ -1,17 +1,10 @@
 import { Reveal } from "@/components/Reveal";
 import { ArrowButton } from "@/components/ArrowButton";
-import {
-  InstagramIcon,
-  FacebookIcon,
-  TiktokIcon,
-  YoutubeIcon,
-} from "@/components/icons";
+import { InstagramIcon, TelegramIcon } from "@/components/icons";
 
 const SOCIALS = [
   { label: "Instagram", Icon: InstagramIcon },
-  { label: "Facebook", Icon: FacebookIcon },
-  { label: "TikTok", Icon: TiktokIcon },
-  { label: "YouTube", Icon: YoutubeIcon },
+  { label: "Telegram", Icon: TelegramIcon },
 ];
 
 const LEGAL = [

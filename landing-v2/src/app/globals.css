@@ -51,11 +51,10 @@
   --color-charcoal: #2a2928;
   --color-blue: #0000ff;
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "Decathlon Text", ui-monospace, monospace;
-  --font-brand: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-text: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-hand: "Inter", ui-sans-serif, cursive;
+  --font-brand: "Decathlon Brand", var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Decathlon Display", var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-text: "Decathlon Text", var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-hand: "Casey", ui-sans-serif, cursive;
   --ease-in: cubic-bezier(0.12, 0, 0.39, 0);
   --ease-out: cubic-bezier(0.19, 1, 0.22, 1);
   --ease-in-out: cubic-bezier(0.86, 0, 0.07, 1);

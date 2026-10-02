@@ -38,10 +38,11 @@ export function ArrowButton({
           padding (2rem each) PLUS the shrink room (3.9rem = circle + gap, split
           across both sides = 1.95rem each). On hover the pill contracts by
           exactly the shrink room and still keeps ~2rem of padding, so it can
-          never become narrower than the text inside. */}
+          never become narrower than the text inside. Below md (touch, no
+          hover) the shrink room is dropped so long labels fit a phone. */}
       <span
         aria-hidden
-        className="pointer-events-none invisible whitespace-nowrap px-[3.95rem] font-display"
+        className="pointer-events-none invisible whitespace-nowrap px-8 font-display md:px-[3.95rem]"
       >
         {children}
       </span>
@@ -71,20 +72,23 @@ export function ArrowButton({
     </>
   );
 
+  // Dark pills count as dark ground for the header logo passing over them
+  const theme = variant === "dark" ? "dark" : undefined;
+
   const classes = cn(
-    "button group relative inline-flex h-[3.4rem] items-center justify-center text-lg",
+    "button group relative inline-flex h-[3.4rem] max-w-full items-center justify-center text-base md:text-lg",
     className,
   );
 
   if (href) {
     return (
-      <a href={href} target={target} rel={rel} onClick={onClick} className={classes}>
+      <a href={href} target={target} rel={rel} onClick={onClick} data-header-theme={theme} className={classes}>
         {inner}
       </a>
     );
   }
   return (
-    <button type="button" onClick={onClick} className={classes}>
+    <button type="button" onClick={onClick} data-header-theme={theme} className={classes}>
       {inner}
     </button>
   );

@@ -50,11 +50,13 @@
   --color-cream: #f5f4ef;
   --color-charcoal: #2a2928;
   --color-blue: #0000ff;
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-brand: "Decathlon Brand", var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Decathlon Display", var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-text: "Decathlon Text", var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-hand: "Casey", ui-sans-serif, cursive;
+  /* Geologica is the primary face everywhere; the Decathlon faces above are
+     kept but no longer referenced. */
+  --font-sans: var(--font-geologica), ui-sans-serif, system-ui, sans-serif;
+  --font-brand: var(--font-geologica), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-geologica), ui-sans-serif, system-ui, sans-serif;
+  --font-text: var(--font-geologica), ui-sans-serif, system-ui, sans-serif;
+  --font-hand: "Casey", var(--font-caveat), ui-sans-serif, cursive;
   --ease-in: cubic-bezier(0.12, 0, 0.39, 0);
   --ease-out: cubic-bezier(0.19, 1, 0.22, 1);
   --ease-in-out: cubic-bezier(0.86, 0, 0.07, 1);
@@ -183,6 +185,9 @@
        design (type, spacing, max-widths) grows on 2K / 4K displays — like the
        source site. Floor keeps the tuned design intact on ≤1920 screens. */
     font-size: clamp(16px, 0.8333vw, 34px);
+    /* Reserve the scrollbar's space even while the preloader locks scrolling
+       (overflow: hidden), so the layout doesn't jump when it comes back. */
+    scrollbar-gutter: stable;
   }
   /* Lenis recommended base styles */
   html.lenis,
@@ -192,9 +197,8 @@
   .lenis.lenis-smooth {
     scroll-behavior: auto !important;
   }
-  .lenis.lenis-stopped {
-    overflow: clip;
-  }
+  /* Lenis' own CSS clips the page while stopped; we keep the scrollbar and
+     let Lenis block the input instead (see Preloader, ProductLightbox). */
   ::selection {
     background: var(--color-charcoal);
     color: var(--color-cream);
@@ -236,6 +240,30 @@
   }
 }
 
+/* Cream backgrounds carry the grain photo at 10% opacity: a 90% cream wash
+   is layered over the raw image (same result as opacity, which a background
+   image can't take). Sized like a fixed full-screen <img> with object-fit:
+   cover (cover + fixed = fills the viewport), seamless across sections. */
+.bg-cream {
+  --q-grain-wash: color-mix(in srgb, var(--color-cream) 90%, transparent);
+  background-image: linear-gradient(var(--q-grain-wash), var(--q-grain-wash)), url("/images/grain.jpg");
+  background-size: auto, cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+/* Touch devices: a fixed background is repainted in full on every scroll
+   frame, which is what made phones heat up. There the grain scrolls with the
+   page as a small tile (720px, ~50 KB instead of 700 KB) — at this density
+   the repeat isn't visible. */
+@media (hover: none) {
+  .bg-cream {
+    background-image: linear-gradient(var(--q-grain-wash), var(--q-grain-wash)), url("/images/grain-mobile.jpg");
+    background-size: auto, 720px;
+    background-position: 0 0;
+    background-attachment: scroll;
+  }
+}
+
 @layer utilities {
   .q-no-scrollbar {
     scrollbar-width: none;
@@ -257,6 +285,8 @@
   .q-reveal.is-in {
     opacity: 1;
     transform: none;
+    /* Drop the GPU layer once shown — dozens of permanent layers eat phone memory. */
+    will-change: auto;
   }
   .q-reveal-delay-1 {
     transition-delay: 0.08s;
@@ -277,6 +307,46 @@
   }
 }
 
+/* BlinkText / .q-blink-shape: a thin solid shadow (one --q-blink-step off
+   the glyphs, so text stays crisp) jumps between offsets (stepped), with a
+   short "off" beat. Text uses text-shadow; SVG icons use drop-shadow. */
+.q-blink,
+.q-blink-shape {
+  --q-blink-shadow: var(--color-charcoal);
+}
+/* --q-blink-size tunes the hop per element (small labels need a bigger one
+   for the shadow to read at all), e.g. class "[--q-blink-size:0.06em]". */
+.q-blink {
+  --q-blink-step: var(--q-blink-size, 0.013em);
+  animation: q-blink 2.4s steps(1, end) infinite;
+}
+.q-blink-shape {
+  --q-blink-step: 0.4px;
+  animation: q-blink-shape 2.4s steps(1, end) infinite;
+}
+@keyframes q-blink {
+  0% { text-shadow: calc(var(--q-blink-step) * 1) calc(var(--q-blink-step) * 1) 0 var(--q-blink-shadow); }
+  18% { text-shadow: calc(var(--q-blink-step) * -1) calc(var(--q-blink-step) * 0.8) 0 var(--q-blink-shadow); }
+  36% { text-shadow: calc(var(--q-blink-step) * -0.8) calc(var(--q-blink-step) * -1) 0 var(--q-blink-shadow); }
+  54% { text-shadow: calc(var(--q-blink-step) * 1) calc(var(--q-blink-step) * -0.8) 0 var(--q-blink-shadow); }
+  72% { text-shadow: none; }
+  80% { text-shadow: calc(var(--q-blink-step) * 1) calc(var(--q-blink-step) * 1) 0 var(--q-blink-shadow); }
+  88% { text-shadow: none; }
+}
+@keyframes q-blink-shape {
+  0% { filter: drop-shadow(calc(var(--q-blink-step) * 1) calc(var(--q-blink-step) * 1) 0 var(--q-blink-shadow)); }
+  18% { filter: drop-shadow(calc(var(--q-blink-step) * -1) calc(var(--q-blink-step) * 0.8) 0 var(--q-blink-shadow)); }
+  36% { filter: drop-shadow(calc(var(--q-blink-step) * -0.8) calc(var(--q-blink-step) * -1) 0 var(--q-blink-shadow)); }
+  54% { filter: drop-shadow(calc(var(--q-blink-step) * 1) calc(var(--q-blink-step) * -0.8) 0 var(--q-blink-shadow)); }
+  72% { filter: none; }
+  80% { filter: drop-shadow(calc(var(--q-blink-step) * 1) calc(var(--q-blink-step) * 1) 0 var(--q-blink-shadow)); }
+  88% { filter: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .q-blink { animation: none; text-shadow: calc(var(--q-blink-step) * 1) calc(var(--q-blink-step) * 1) 0 var(--q-blink-shadow); }
+  .q-blink-shape { animation: none; filter: drop-shadow(calc(var(--q-blink-step) * 1) calc(var(--q-blink-step) * 1) 0 var(--q-blink-shadow)); }
+}
+
 @keyframes q-marquee {
   from {
     transform: translateX(0);
@@ -288,5 +358,62 @@
 @keyframes q-spin-slow {
   to {
     transform: rotate(360deg);
+  }
+}
+/* Image skeleton (LoadingImage): a soft highlight sweeping across the
+   placeholder tone until the photo has loaded. Both tones are overridable
+   per use (e.g. darker inside the lightbox). */
+.q-shimmer {
+  background-color: var(--q-shimmer-bg, #dcd7ce);
+  background-image: linear-gradient(100deg, transparent 30%, var(--q-shimmer-glow, rgb(255 255 255 / 0.45)) 50%, transparent 70%);
+  background-size: 250% 100%;
+  animation: q-shimmer 1.4s ease-in-out infinite;
+}
+@keyframes q-shimmer {
+  from {
+    background-position: 125% 0;
+  }
+  to {
+    background-position: -125% 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .q-shimmer {
+    animation: none;
+  }
+}
+
+/* Preloader, driven by CSS so it animates from the first paint, before the
+   page's JavaScript has loaded. The counter is a registered integer property
+   counted up with an ease-out curve and printed through a CSS counter; the
+   cards grow in at their own delays (set inline by the component). */
+@property --q-pct {
+  syntax: "<integer>";
+  inherits: false;
+  initial-value: 0;
+}
+.q-loader-count {
+  counter-reset: q-pct var(--q-pct);
+  animation: q-pct 2400ms cubic-bezier(0.33, 1, 0.68, 1) forwards;
+}
+.q-loader-count::after {
+  content: counter(q-pct, decimal-leading-zero) "%";
+}
+@keyframes q-pct {
+  to {
+    --q-pct: 100;
+  }
+}
+.q-loader-card {
+  animation-name: q-loader-card;
+  animation-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+  animation-fill-mode: both;
+}
+@keyframes q-loader-card {
+  from {
+    transform: translate(-50%, -50%) rotate(var(--q-from)) scale(0);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(var(--q-to)) scale(1);
   }
 }

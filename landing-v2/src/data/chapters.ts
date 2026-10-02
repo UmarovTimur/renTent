@@ -18,6 +18,9 @@ export interface Outfit {
 
 export interface ChapterProduct {
   code: string;
+  /** Short label for the compact variant switcher, e.g. "2" for "Палатка 2 места".
+   * Falls back to `code` when omitted (used by chapters with only 2 variants). */
+  shortLabel?: string;
   tagline: string;
   detail: string;
   packshot: string;
@@ -76,6 +79,7 @@ export const CHAPTERS: Chapter[] = [
     products: [
       {
         code: "Палатка 2 места",
+        shortLabel: "2",
         tagline: "Лёгкая и компактная — для двоих в любом походе.",
         detail:
           "Палатка на 2 места создана для лёгких походов — компактная в сборе, быстро устанавливается и весит всего 2,1 кг. Отличный выбор для пары или соло-путешественника, который ценит мобильность и не готов жертвовать комфортом ночёвки.",
@@ -83,6 +87,7 @@ export const CHAPTERS: Chapter[] = [
       },
       {
         code: "Палатка 12 мест",
+        shortLabel: "12",
         tagline: "Просторная, для большой компании или всей семьи.",
         detail:
           "Палатка на 12 мест — это полноценный дом на природе: несколько спальных отсеков, высокий потолок в полный рост и общая гостиная зона. Идеальна для семейного отдыха или похода большой компанией, когда никто не хочет спать в тесноте.",

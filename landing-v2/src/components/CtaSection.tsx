@@ -1,38 +1,43 @@
 import { Reveal } from "@/components/Reveal";
 import { ArrowButton } from "@/components/ArrowButton";
+import { typograph } from "@/lib/typograph";
+import { MANAGER_TELEGRAM } from "@/lib/contacts";
+import type { Locale } from "@/i18n/config";
+import { getDictionary } from "@/i18n";
 
 /**
- * "Забронируйте снаряжение онлайн" — booking call to action on cream.
+ * "Пишите нам" — call to action on cream that links to the manager in Telegram.
  */
-export function CtaSection() {
+export function CtaSection({ locale }: { locale: Locale }) {
+  const t = getDictionary(locale).cta;
   return (
     <section
+      id="contacts"
       data-header-theme="light"
-      className="relative flex min-h-[70vh] items-center justify-center overflow-hidden bg-cream py-[14vh] text-charcoal"
+      className="relative flex items-center justify-center overflow-hidden bg-cream py-12 text-charcoal md:min-h-[70vh] md:py-[14vh]"
     >
-      <div className="q-container flex flex-col items-center text-center">
+      <div className="q-container flex flex-col items-center text-balance text-center">
         <Reveal
           as="h2"
-          className="max-w-[14em] font-display text-[clamp(2.25rem,6vw,5.5rem)] font-medium leading-[1.05]"
+          className="max-w-[14em] font-display text-[clamp(1.75rem,6vw,5.5rem)] font-medium leading-[1.05]"
         >
-          Пишите нам — поможем с выбором снаряжения
+          {typograph(t.title)}
         </Reveal>
         <Reveal
           as="p"
           delay={1}
-          className="mt-8 max-w-[38rem] font-text text-[clamp(1.05rem,1.4vw,1.35rem)] leading-[1.4] text-charcoal/80"
+          className="mt-4 max-w-[38rem] font-text md:mt-8 text-[clamp(1.05rem,1.4vw,1.35rem)] leading-[1.4] text-charcoal/80"
         >
-          Бронь — 50 000 сум, остальную сумму передаёте только при получении
-          снаряжения.
+          {typograph(t.lead)}
         </Reveal>
-        <Reveal delay={2} className="mt-10">
+        <Reveal delay={2} className="mt-6 md:mt-10">
           <ArrowButton
-            href="https://t.me/REPLACE_USERNAME"
+            href={MANAGER_TELEGRAM}
             target="_blank"
             rel="noopener noreferrer"
             variant="dark"
           >
-            Забронировать онлайн в боте
+            {t.button}
           </ArrowButton>
         </Reveal>
       </div>

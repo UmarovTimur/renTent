@@ -330,27 +330,37 @@ function ProductFeature({ data }: { data: ChapterData }) {
       data-header-theme="light"
       className="w-full bg-cream px-[1.6rem] py-[10vh] text-charcoal xl:px-[2rem]"
     >
-      {/* toggle */}
-      <div className="mb-[clamp(2rem,3vw,3.5rem)] flex items-center justify-center gap-[clamp(1.5rem,2.5vw,3rem)] font-display text-[clamp(1.75rem,3.4vw,3.4rem)] font-medium">
+      {/* toggle — compact chips so it stays usable with many variants (e.g. 2–12 seats) */}
+      <div
+        role="tablist"
+        aria-label="Варианты вместимости"
+        className="mx-auto mb-[clamp(1.5rem,2.5vw,2.5rem)] flex max-w-[42rem] flex-wrap items-center justify-center gap-1.5 sm:gap-2"
+      >
         {data.products.map((p, i) => (
           <button
             key={p.code}
             type="button"
+            role="tab"
+            aria-selected={i === active}
+            title={p.code}
             onClick={() => setActive(i)}
             className={cn(
-              "transition-colors duration-300",
-              i === active ? "text-charcoal" : "text-charcoal/30 hover:text-charcoal/60",
+              "rounded-full border font-text text-sm font-semibold tabular-nums transition-colors duration-200 sm:text-base",
+              "px-3.5 py-1.5 sm:px-4 sm:py-2",
+              i === active
+                ? "border-charcoal bg-charcoal text-cream"
+                : "border-charcoal/15 text-charcoal/55 hover:border-charcoal/35 hover:text-charcoal",
             )}
           >
-            {p.code}
+            {p.shortLabel ?? p.code}
           </button>
         ))}
       </div>
 
       {/* greige showcase panel — full width, 12-col grid, side padding only */}
-      <Reveal className="relative w-full overflow-hidden rounded-[2rem] bg-[#dcd7ce] px-[clamp(1.5rem,4vw,6rem)] py-[clamp(3rem,6vw,8rem)]">
-        <div className="grid grid-cols-1 items-center gap-[clamp(2rem,4vw,6rem)] lg:grid-cols-12">
-          <div className="relative aspect-square w-full lg:col-span-5">
+      <Reveal className="relative w-full overflow-hidden rounded-[1.5rem] bg-[#dcd7ce] px-[clamp(1.25rem,3.5vw,4.5rem)] py-[clamp(2rem,4.5vw,5rem)]">
+        <div className="grid grid-cols-1 items-center gap-[clamp(1.5rem,3vw,4rem)] lg:grid-cols-12">
+          <div className="relative aspect-square w-full max-w-[16rem] mx-auto sm:max-w-[20rem] lg:col-span-5 lg:max-w-none">
             <Image
               src={product.packshot}
               alt={product.code}
@@ -360,10 +370,10 @@ function ProductFeature({ data }: { data: ChapterData }) {
             />
           </div>
           <div className="lg:col-span-6 lg:col-start-7">
-            <p className="font-display text-[clamp(1.75rem,2.6vw,2.7rem)] font-medium leading-[1.15]">
+            <p className="font-display text-[clamp(1.35rem,2.2vw,2.1rem)] font-medium leading-[1.15]">
               {product.tagline}
             </p>
-            <p className="mt-[clamp(1.25rem,1.5vw,2rem)] font-text text-[clamp(1.05rem,1.25vw,1.35rem)] leading-[1.4] text-charcoal/80">
+            <p className="mt-[clamp(0.75rem,1.1vw,1.25rem)] font-text text-[clamp(0.95rem,1.1vw,1.15rem)] leading-[1.4] text-charcoal/80">
               {product.detail}
             </p>
           </div>

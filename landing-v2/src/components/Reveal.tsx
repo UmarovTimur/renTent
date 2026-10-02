@@ -11,13 +11,15 @@ interface RevealProps {
   as?: ElementType;
   /** re-hide when out of view (default false — reveal once) */
   once?: boolean;
+  /** marks a dark (or light) block so the header logo can switch over it */
+  theme?: "dark" | "light";
 }
 
 /**
  * Fade-and-rise on scroll into view via IntersectionObserver.
  * Mirrors the source's reveal choreography without a scroll library.
  */
-export function Reveal({ children, className, delay, as, once = true }: RevealProps) {
+export function Reveal({ children, className, delay, as, once = true, theme }: RevealProps) {
   const Tag = (as ?? "div") as ElementType;
   const ref = useRef<HTMLElement>(null);
   const [inView, setInView] = useState(false);
@@ -43,6 +45,7 @@ export function Reveal({ children, className, delay, as, once = true }: RevealPr
   return (
     <Tag
       ref={ref}
+      data-header-theme={theme}
       className={cn(
         "q-reveal",
         delay === 1 && "q-reveal-delay-1",

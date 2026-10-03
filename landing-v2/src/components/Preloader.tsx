@@ -15,9 +15,18 @@ export const PRELOADER_TOTAL_MS = PRELOADER_COUNT_MS + 320;
 export const PRELOADER_EXIT_MS = 700;
 export const PRELOADER_REVEAL_MS = PRELOADER_TOTAL_MS + PRELOADER_EXIT_MS;
 // How long each card takes to grow in
-const CARD_GROW_MS = 1600;
+const CARD_GROW_MS = 900;
 
 const COUNTER_ID = "preloader-counter";
+
+// Set once the loader has played (or isn't wanted, e.g. after landing on a
+// product page): client-side returns to the home page skip it then.
+let played = false;
+
+/** Skip the loader on the next client-side visit to the home page. */
+export function skipPreloader() {
+  played = true;
+}
 
 /**
  * The loader animates in pure CSS from the very first paint, before React has
@@ -33,6 +42,7 @@ function loaderElapsed() {
 
 /** Delay until the loader has fully left the screen, for entrance timers. */
 export function msUntilReveal() {
+  if (played && !document.getElementById(COUNTER_ID)) return 0;
   return Math.max(0, PRELOADER_REVEAL_MS - loaderElapsed());
 }
 
@@ -45,28 +55,27 @@ const tentCard = (name: string) => `/images/loader-cards/${name}.webp`;
  *  — only the angle differs. `at` = % threshold. */
 const LOADER_IMAGES = [
   {
-    src: tentCard("tent-2"),
-    rotate: -9,
+    src: tentCard("tent-4"),
+    // index into the preloader's localized card descriptions
+    card: 1,
+    rotate: -8,
     at: 6,
   },
   {
-    src: tentCard("tent-4"),
-    rotate: 7,
-    at: 30,
-  },
-  {
     src: tentCard("tent-8"),
-    rotate: -6,
-    at: 55,
+    card: 2,
+    rotate: 6,
+    at: 38,
   },
   {
     src: tentCard("tent-12"),
-    rotate: 10,
-    at: 78,
+    card: 3,
+    rotate: -4,
+    at: 70,
   },
 ];
 // Extra turn each card unwinds while appearing, in the direction of its angle.
-const SPIN_IN_DEG = 30;
+const SPIN_IN_DEG = 12;
 
 /** When the ease-out counter (1 − (1 − t)³) reaches `pct`, in ms. */
 const reachMs = (pct: number) => Math.round((1 - Math.cbrt(1 - pct / 100)) * PRELOADER_COUNT_MS);
@@ -76,17 +85,21 @@ const reachMs = (pct: number) => Math.round((1 - Math.cbrt(1 - pct / 100)) * PRE
  * matching the source. Counts to 100 over ~2.4s, then fades out.
  */
 export function Preloader() {
+  const [skipped] = useState(() => played);
   const [done, setDone] = useState(false);
   const lenis = useLenis();
   const t = useI18n().t.preloader;
 
   useEffect(() => {
+    played = true;
+    if (skipped) return;
     // The count itself runs in CSS; only the exit needs JS.
     const finish = setTimeout(() => setDone(true), Math.max(0, PRELOADER_TOTAL_MS - loaderElapsed()));
     return () => clearTimeout(finish);
-  }, []);
+  }, [skipped]);
 
   useEffect(() => {
+    if (skipped) return;
     // Lock scrolling while the loader is up. Lenis swallows wheel and touch
     // while stopped; overflow is left alone so the scrollbar never toggles
     // (that made the layout jump and Chrome repaint it late).
@@ -96,7 +109,9 @@ export function Preloader() {
     } else {
       lenis?.stop();
     }
-  }, [done, lenis]);
+  }, [done, lenis, skipped]);
+
+  if (skipped) return null;
 
   return (
     <div
@@ -129,7 +144,7 @@ export function Preloader() {
           >
             <Image
               src={img.src}
-              alt={t.cards[i]}
+              alt={t.cards[img.card]}
               fill
               unoptimized
               // All of them show within the first seconds: fetched first, ahead of the page's own photos.
@@ -149,7 +164,7 @@ export function Preloader() {
 
       {/* New season — center left */}
       <div className="q-hand q-blink-shape absolute left-[10%] top-[68%] z-10 md:left-[26%] md:top-[52%] text-3xl font-semibold leading-none text-charcoal">
-        <span className="-rotate-6 inline-block">{t.calling}</span>
+        <span className="-rotate-6 inline-block whitespace-pre-line">{t.calling}</span>
         <HandArrowLong className="mt-1 h-11 w-14 translate-x-20" />
       </div>
 

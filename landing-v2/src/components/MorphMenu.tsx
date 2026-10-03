@@ -18,10 +18,10 @@ const TEXT_DELAYS = ["delay-[120ms]", "delay-[170ms]", "delay-[220ms]", "delay-[
 
 // Trigger row: content pushed to both edges as it widens, equal padding above
 // and below the label. The rows below start right under it; the list inset
-// and the row padding are 0.25rem each, so thumbnails sit at half the
-// trigger's 1rem side padding. Radii are concentric: the shell's 1.4rem minus
-// each 0.25rem inset gives 1.15rem for a row and 0.9rem for its thumbnail.
-const TRIGGER_CLASS = "flex items-center justify-between gap-3 px-4 py-3 text-lg";
+// and the row padding are 0.25rem each. Closed, the shell is a full pill;
+// open, its radii are concentric: the shell's 1rem minus each 0.25rem inset
+// gives 0.75rem for a row and 0.5rem for its thumbnail.
+const TRIGGER_CLASS = "flex items-center justify-between gap-3 px-3.5 py-2.5 text-base";
 
 interface Size {
   w: number;
@@ -139,14 +139,20 @@ export function MorphMenu({
       <div aria-hidden style={triggerSize ? { width: triggerSize.w, height: triggerSize.h } : undefined} />
       <div
         className={cn(
-          "absolute overflow-hidden rounded-[1.4rem] text-white backdrop-blur-md md:backdrop-blur-xl transition-[width,height,background-color] duration-[650ms]",
+          "absolute overflow-hidden rounded-full text-white backdrop-blur-md md:backdrop-blur-xl transition-[width,height,border-radius,background-color] duration-[650ms]",
           EASE,
           align === "right" ? "right-0" : "left-0",
           centerOnMobile && "max-md:left-1/2 max-md:right-auto max-md:-translate-x-1/2",
           upOnMobile ? "bottom-0 md:bottom-auto md:top-0" : "top-0",
           dark ? "bg-black/25" : "bg-charcoal/40",
         )}
-        style={size ? { width: size.w, height: size.h } : undefined}
+        // Closed: a full pill (radius = half its height, not 9999px, so the
+        // radius animates smoothly); open: the panel's 1rem corners.
+        style={
+          size && triggerSize
+            ? { width: size.w, height: size.h, borderRadius: open ? "1rem" : triggerSize.h / 2 }
+            : undefined
+        }
       >
         <div
           ref={panelRef}
@@ -215,14 +221,15 @@ export function MorphMenuItem({
         tabIndex={open ? undefined : -1}
         onClick={onClick}
         className={cn(
-          "flex w-full items-center rounded-[1.15rem] text-left transition-colors duration-200 hover:bg-white/10",
-          thumb ? "gap-5 p-1" : "gap-3 px-3 py-2",
+          "flex w-full items-center text-left transition-colors duration-200 hover:bg-white/10",
+          "rounded-[0.75rem]",
+          thumb ? "gap-4 p-1" : "gap-3 px-2.5 py-2",
         )}
       >
         {thumb && (
           <span
             className={cn(
-              "relative flex size-[4.75rem] shrink-0 items-center justify-center overflow-hidden rounded-[0.9rem] bg-cream text-charcoal transition-transform duration-[700ms]",
+              "relative flex size-16 shrink-0 items-center justify-center overflow-hidden rounded-[0.5rem] bg-cream text-charcoal transition-transform duration-[700ms]",
               EASE,
               open ? cn("rotate-0 scale-100", THUMB_DELAYS[index]) : "-rotate-[35deg] scale-0 delay-0",
             )}
@@ -230,7 +237,7 @@ export function MorphMenuItem({
             {thumb}
           </span>
         )}
-        <span className="flex-1 overflow-hidden whitespace-nowrap py-[0.15em] font-display text-lg font-bold leading-none">
+        <span className="flex-1 overflow-hidden whitespace-nowrap py-[0.15em] font-display text-base font-bold leading-none">
           <span
             className={cn(
               "block transition-transform duration-[650ms]",
@@ -243,7 +250,7 @@ export function MorphMenuItem({
         </span>
         <span
           className={cn(
-            "mr-3 h-1.5 w-1.5 shrink-0 rounded-full bg-current transition-transform duration-300",
+            "mr-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-current transition-transform duration-300",
             open && active ? "scale-100 delay-300" : "scale-0 delay-0",
           )}
         />

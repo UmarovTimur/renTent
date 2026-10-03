@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { LoadingImage } from "@/components/LoadingImage";
 import { useLenis } from "lenis/react";
 import { Phone } from "lucide-react";
@@ -8,9 +9,9 @@ import { ArrowButton } from "@/components/ArrowButton";
 import { TelegramIcon } from "@/components/icons";
 import { MANAGER_PHONE, MANAGER_PHONE_HREF, MANAGER_TELEGRAM } from "@/lib/contacts";
 import { msUntilReveal } from "@/components/Preloader";
-import { ProductLightbox } from "@/components/ProductLightbox";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/i18n/I18nProvider";
+import { productHref } from "@/i18n/config";
 import type { CatalogProduct } from "@/data/products";
 
 // Rail cards fetched right away (enough to fill a wide screen), the rest lazily.
@@ -25,12 +26,12 @@ const CONTACT_ROUND =
 /**
  * Typographic hero on cream: oversized dark headline on the left, a short
  * pitch + key facts on the right, a hairline rule, then a horizontal
- * scroll-snap slider of catalog cards that open the product lightbox.
+ * scroll-snap slider of catalog cards that open the product pages.
  */
 export function HeroSection({ products }: { products: CatalogProduct[] }) {
-  const t = useI18n().t.hero;
+  const { locale, t: dict } = useI18n();
+  const t = dict.hero;
   const [shown, setShown] = useState(false);
-  const [lightbox, setLightbox] = useState<{ product: CatalogProduct; index: number } | null>(null);
   const lenis = useLenis();
 
   // Play the entrance only once the preloader has left the screen.
@@ -82,7 +83,9 @@ export function HeroSection({ products }: { products: CatalogProduct[] }) {
                   className={cn(
                     "block transition-transform duration-[1100ms] ease-[cubic-bezier(0.19,1,0.22,1)]",
                     LINE_DELAYS[i],
-                    shown ? "translate-y-0" : "translate-y-[105%]",
+                    // 100% alone leaves the glyph tops peeking into the mask's
+                    // descender padding (tight 0.86 leading), so push past it too
+                    shown ? "translate-y-0" : "translate-y-[calc(100%+0.4em)]",
                   )}
                 >
                   {line}
@@ -166,17 +169,8 @@ export function HeroSection({ products }: { products: CatalogProduct[] }) {
         <HeroSlider
           // Only products with photos make it into the showcase rail.
           products={products.filter((p) => p.images.length > 0)}
-          onOpen={(product) => setLightbox({ product, index: 0 })} />
+          href={(product) => productHref(locale, product.slug)} />
       </div>
-
-      {lightbox && (
-        <ProductLightbox
-          product={lightbox.product}
-          index={lightbox.index}
-          onIndexChange={(index) => setLightbox((s) => (s ? { ...s, index } : s))}
-          onClose={() => setLightbox(null)}
-        />
-      )}
     </section>
   );
 }
@@ -203,10 +197,10 @@ const COPIES = 3;
  */
 function HeroSlider({
   products,
-  onOpen,
+  href,
 }: {
   products: CatalogProduct[];
-  onOpen: (product: CatalogProduct) => void;
+  href: (product: CatalogProduct) => string;
 }) {
   const loop = Array.from({ length: COPIES }, (_, copy) => products.map((product) => ({ product, copy }))).flat();
   const trackRef = useRef<HTMLDivElement>(null);
@@ -339,14 +333,15 @@ function HeroSlider({
     >
       <div ref={railRef} className="flex w-max gap-5 px-4 will-change-transform md:px-[1.6rem]">
         {loop.map(({ product, copy }, i) => (
-          <button
+          <Link
             key={`${product.id}-${copy}`}
-            type="button"
+            href={href(product)}
+            // The rail is dragged, not the link itself
+            draggable={false}
             // Only the first copy is exposed to keyboard / screen readers.
             aria-hidden={copy > 0 || undefined}
             tabIndex={copy > 0 ? -1 : undefined}
-            onClick={() => onOpen(product)}
-            className="group w-[clamp(11rem,52vw,14rem)] shrink-0 cursor-[inherit] text-left md:w-[clamp(16rem,21vw,24rem)]"
+            className="group block w-[clamp(11rem,52vw,14rem)] shrink-0 cursor-[inherit] text-left md:w-[clamp(16rem,21vw,24rem)]"
           >
             <span className="relative block aspect-[2/3] overflow-hidden rounded-[1.25rem] bg-[#dcd7ce]">
               <LoadingImage
@@ -362,7 +357,7 @@ function HeroSlider({
                 className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-[1.04]"
               />
             </span>
-          </button>
+          </Link>
         ))}
       </div>
     </div>

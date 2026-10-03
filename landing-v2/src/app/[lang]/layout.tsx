@@ -3,6 +3,9 @@ import { notFound } from "next/navigation";
 import { Caveat, Geologica } from "next/font/google";
 import "../globals.css";
 import { SmoothScroll } from "@/components/SmoothScroll";
+import { CartProvider } from "@/components/cart/CartProvider";
+import { CartButton } from "@/components/cart/CartButton";
+import { CartDrawer } from "@/components/cart/CartDrawer";
 import { I18nProvider } from "@/i18n/I18nProvider";
 import { LOCALES, hasLocale, localeHome } from "@/i18n/config";
 import { getDictionary } from "@/i18n";
@@ -66,7 +69,13 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
       </head>
       <body className="min-h-full bg-cream text-charcoal">
         <I18nProvider locale={lang}>
-          <SmoothScroll>{children}</SmoothScroll>
+          <SmoothScroll>
+            <CartProvider>
+              {children}
+              <CartButton />
+              <CartDrawer />
+            </CartProvider>
+          </SmoothScroll>
         </I18nProvider>
       </body>
     </html>

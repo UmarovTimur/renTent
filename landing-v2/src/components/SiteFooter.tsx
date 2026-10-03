@@ -43,10 +43,10 @@ export function SiteFooter({ locale }: { locale: Locale }) {
       <div className="grid grid-cols-1 gap-3 lg:grid-cols-[27rem_minmax(0,1fr)]">
         {/* Photo */}
         {/* Portrait shot with a caption baked into its middle: taller crop on
-            phones, a 27rem square on desktop (the card beside it stretches to
-            that height), focus nudged down so the caption and the tent stay in
-            frame. */}
-        <Reveal className="relative aspect-[4/5] overflow-hidden rounded-2xl sm:aspect-[16/10] lg:aspect-auto lg:h-[27rem]">
+            phones; on desktop it stretches to the card's content height (so the
+            card has no empty gap between the lead and the button), focus nudged
+            down so the caption and the tent stay in frame. */}
+        <Reveal className="relative aspect-[4/5] overflow-hidden rounded-2xl sm:aspect-[16/10] lg:aspect-auto lg:h-auto lg:min-h-[20rem]">
           <LoadingImage
             src="/images/footer.jpg"
             alt={t.photoAlt}
@@ -70,7 +70,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
             <h2 className="font-display text-[clamp(2.5rem,3.8vw,3.75rem)] font-medium leading-[1.05] tracking-[-0.02em]">
               {t.title}
             </h2>
-            <p className="mx-auto mt-4 max-w-[46rem] font-display sm:mx-0 text-[clamp(1.05rem,1.6vw,1.6rem)] leading-[1.3] text-charcoal/85">
+            <p className="mx-auto mt-4 max-w-[34rem] font-display sm:mx-0 text-[clamp(1.05rem,1.6vw,1.6rem)] leading-[1.3] text-charcoal/85">
               {t.lead}
             </p>
           </div>
@@ -131,7 +131,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
           <span>
             {t.developedBy}{" "}
             <a
-              href="https://github.com/UmarovTimur"
+              href="https://t.me/status_3"
               target="_blank"
               rel="noopener noreferrer"
               className="underline underline-offset-4 transition-opacity hover:opacity-60"

@@ -3,14 +3,15 @@
 import { useEffect, useRef, useState } from "react";
 import { LoadingImage } from "@/components/LoadingImage";
 import { useLenis } from "lenis/react";
-import { Globe, GripVertical } from "lucide-react";
+import { GripVertical } from "lucide-react";
 import { LogoIcon } from "@/components/icons";
 import { msUntilReveal } from "@/components/Preloader";
 import { MorphMenu, MorphMenuItem } from "@/components/MorphMenu";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/i18n/I18nProvider";
-import { LOCALES, localeHome } from "@/i18n/config";
-import { getDictionary, type Dictionary } from "@/i18n";
+import { localeHome } from "@/i18n/config";
+import type { Dictionary } from "@/i18n";
 
 interface MenuItem {
   target: Section; // section element id
@@ -41,7 +42,7 @@ export function SiteHeader() {
   const [activeIdx, setActiveIdx] = useState(0);
   const [dark, setDark] = useState(true); // true = light text (over dark bg)
   const [visible, setVisible] = useState(false);
-  const { locale, t } = useI18n();
+  const { t } = useI18n();
   const lenis = useLenis();
   const headerRef = useRef<HTMLElement>(null);
   const logoRef = useRef<HTMLDivElement>(null);
@@ -151,7 +152,7 @@ export function SiteHeader() {
         dark={dark}
         upOnMobile
         centerOnMobile
-        panelClassName="w-[19.5rem]"
+        panelClassName="w-[17rem]"
         className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] left-1/2 -translate-x-1/2 md:relative md:bottom-auto md:left-auto md:translate-none"
         trigger={(open) => (
           <>
@@ -203,7 +204,7 @@ export function SiteHeader() {
               index={i}
               active={i === activeIdx}
               label={t.header.menu[item.target]}
-              thumb={<LoadingImage src={item.thumb} alt="" fill sizes="76px" className="object-cover" />}
+              thumb={<LoadingImage src={item.thumb} alt="" fill sizes="64px" className="object-cover" />}
               onClick={() => {
                 close();
                 goTo(item.target);
@@ -227,33 +228,7 @@ export function SiteHeader() {
       </div>
 
       {/* Right: language switcher — same growing pill, anchored right */}
-      <MorphMenu
-        dark={dark}
-        align="right"
-        panelClassName="w-44"
-        trigger={() => (
-          <>
-            <Globe className="h-4 w-4 opacity-70" aria-label={t.header.language} />
-            <span className="font-display leading-none">{locale.toUpperCase()}</span>
-          </>
-        )}
-      >
-        {(close) =>
-          LOCALES.map((l, i) => (
-            <MorphMenuItem
-              key={l}
-              index={i}
-              active={l === locale}
-              label={getDictionary(l).languageName}
-              onClick={() => {
-                close();
-                // Each language is its own page ("/" and "/en")
-                if (l !== locale) window.location.assign(localeHome(l));
-              }}
-            />
-          ))
-        }
-      </MorphMenu>
+      <LanguageSwitcher dark={dark} hrefFor={localeHome} />
     </header>
   );
 }

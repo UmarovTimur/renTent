@@ -13,20 +13,22 @@ interface RevealProps {
   once?: boolean;
   /** marks a dark (or light) block so the header logo can switch over it */
   theme?: "dark" | "light";
+  /** skip the scroll trigger and show right away (content swapped in after load) */
+  immediate?: boolean;
 }
 
 /**
  * Fade-and-rise on scroll into view via IntersectionObserver.
  * Mirrors the source's reveal choreography without a scroll library.
  */
-export function Reveal({ children, className, delay, as, once = true, theme }: RevealProps) {
+export function Reveal({ children, className, delay, as, once = true, theme, immediate = false }: RevealProps) {
   const Tag = (as ?? "div") as ElementType;
   const ref = useRef<HTMLElement>(null);
   const [inView, setInView] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
-    if (!el) return;
+    if (!el || immediate) return;
     const io = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -40,7 +42,7 @@ export function Reveal({ children, className, delay, as, once = true, theme }: R
     );
     io.observe(el);
     return () => io.disconnect();
-  }, [once]);
+  }, [once, immediate]);
 
   return (
     <Tag
@@ -51,7 +53,7 @@ export function Reveal({ children, className, delay, as, once = true, theme }: R
         delay === 1 && "q-reveal-delay-1",
         delay === 2 && "q-reveal-delay-2",
         delay === 3 && "q-reveal-delay-3",
-        inView && "is-in",
+        (inView || immediate) && "is-in",
         className,
       )}
     >

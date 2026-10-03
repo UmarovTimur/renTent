@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { useLenis } from "lenis/react";
 import { getImageProps } from "next/image";
 import { LoadingImage } from "@/components/LoadingImage";
@@ -75,7 +76,8 @@ export function ProductLightbox({
     prefetchPhotos([product.images[(index + 1) % count], product.images[(index - 1 + count) % count]]);
   }, [count, index, product.images]);
 
-  const trackPointer = (e: React.MouseEvent<HTMLDivElement>) => {
+  // Mouse moves and finger drags both steer the zoomed-in spot
+  const trackPointer = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!zoomed) return;
     const rect = e.currentTarget.getBoundingClientRect();
     setOrigin({
@@ -84,7 +86,9 @@ export function ProductLightbox({
     });
   };
 
-  return (
+  // Portaled to <body>: rendered in place, a positioned/sticky ancestor's
+  // stacking context would trap its z-index under the rest of the page.
+  return createPortal(
     <div
       role="dialog"
       aria-modal="true"
@@ -96,42 +100,50 @@ export function ProductLightbox({
         <X className="size-5" />
       </ControlButton>
 
-      <div
-        className="relative aspect-[3/4] w-full max-w-[min(85vw,calc(80vh*3/4))] overflow-hidden rounded-2xl bg-charcoal"
-        onClick={(e) => e.stopPropagation()}
-        onMouseMove={trackPointer}
-      >
-        <LoadingImage
-          key={product.images[index]}
-          src={product.images[index]}
-          alt={t.photo(product.name, index + 1)}
-          fill
-          sizes={LIGHTBOX_SIZES}
-          loading="eager"
-          fetchPriority="high"
-          skeletonClassName="[--q-shimmer-bg:var(--color-charcoal)] [--q-shimmer-glow:rgb(255_255_255/0.08)]"
-          onClick={(e) => {
-            const rect = e.currentTarget.getBoundingClientRect();
-            setOrigin({
-              x: ((e.clientX - rect.left) / rect.width) * 100,
-              y: ((e.clientY - rect.top) / rect.height) * 100,
-            });
-            setZoomed((z) => !z);
-          }}
+      {/* Keeps the photo's place in the layout; zoomed in, the photo itself
+          leaves it and fills the whole screen, so it isn't cut to this frame */}
+      <div className="relative aspect-[2/3] w-full max-w-[min(85vw,calc(80vh*2/3))]">
+        <div
           className={cn(
-            "object-cover transition-transform duration-300 ease-out",
-            zoomed ? "cursor-zoom-out" : "cursor-zoom-in",
+            "overflow-hidden",
+            zoomed ? "fixed inset-0 z-[5] touch-none bg-black" : "absolute inset-0 rounded-2xl bg-charcoal",
           )}
-          style={{
-            transform: `scale(${zoomed ? ZOOM : 1})`,
-            transformOrigin: `${origin.x}% ${origin.y}%`,
-          }}
-        />
+          onClick={(e) => e.stopPropagation()}
+          onPointerMove={trackPointer}
+        >
+          <LoadingImage
+            key={product.images[index]}
+            src={product.images[index]}
+            alt={t.photo(product.name, index + 1)}
+            fill
+            sizes={LIGHTBOX_SIZES}
+            loading="eager"
+            fetchPriority="high"
+            skeletonClassName="[--q-shimmer-bg:var(--color-charcoal)] [--q-shimmer-glow:rgb(255_255_255/0.08)]"
+            onClick={(e) => {
+              const rect = e.currentTarget.getBoundingClientRect();
+              setOrigin({
+                x: ((e.clientX - rect.left) / rect.width) * 100,
+                y: ((e.clientY - rect.top) / rect.height) * 100,
+              });
+              setZoomed((z) => !z);
+            }}
+            className={cn(
+              // Whole photo, never cropped
+              "object-contain transition-transform duration-300 ease-out",
+              zoomed ? "cursor-zoom-out" : "cursor-zoom-in",
+            )}
+            style={{
+              transform: `scale(${zoomed ? ZOOM : 1})`,
+              transformOrigin: `${origin.x}% ${origin.y}%`,
+            }}
+          />
+        </div>
       </div>
 
       {/* Controls: icons only — prev, one dot per photo, next, zoom */}
       <div
-        className="flex items-center gap-1 rounded-full bg-white/10 p-1 text-white"
+        className="relative z-10 flex items-center gap-1 rounded-full bg-white/10 p-1 text-white backdrop-blur-md"
         onClick={(e) => e.stopPropagation()}
       >
         {count > 1 && (
@@ -167,7 +179,8 @@ export function ProductLightbox({
           {zoomed ? <ZoomOut className="size-5" /> : <ZoomIn className="size-5" />}
         </ControlButton>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
 

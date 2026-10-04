@@ -16,9 +16,5 @@ FROM nginx:1.27-alpine
 
 COPY frontend/deploy/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=builder /app/dist /usr/share/nginx/html/app
-COPY landing/index.html /usr/share/nginx/html/
-COPY landing/css/ /usr/share/nginx/html/css/
-COPY landing/js/ /usr/share/nginx/html/js/
-COPY landing/images/ /usr/share/nginx/html/images/
 
 EXPOSE 80

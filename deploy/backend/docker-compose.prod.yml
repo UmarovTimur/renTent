@@ -9,8 +9,21 @@ services:
     depends_on:
       backend:
         condition: service_started
+      landing:
+        condition: service_started
     networks:
       - app_network
+
+  # Public site (landing-v2, Next.js standalone). The frontend nginx proxies
+  # everything outside /app, /api, /media and /admin to it.
+  landing:
+    image: ${LANDING_IMAGE}
+    restart: unless-stopped
+    environment:
+      NEXT_TELEMETRY_DISABLED: "1"
+    networks:
+      - app_network
+
   db:
     image: postgres:15
     restart: unless-stopped

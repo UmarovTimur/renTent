@@ -7,3 +7,9 @@ export const MANAGER_PHONE_HREF = `tel:${MANAGER_PHONE.replace(/\s/g, "")}`;
 
 /** Pickup point coordinates, shown in the footer. */
 export const PICKUP_COORDS = `41°16'16.9"N 69°13'42.4"E`;
+/** The same point in decimal degrees, for structured data. */
+export const PICKUP_GEO = { latitude: 41.271361, longitude: 69.228444 };
+
+/** Public profiles (footer links and the business's `sameAs`). */
+export const INSTAGRAM_URL = "https://www.instagram.com/rentent.uz";
+export const TELEGRAM_CHANNEL_URL = "https://t.me/renTent_uz";

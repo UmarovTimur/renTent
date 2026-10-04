@@ -79,6 +79,8 @@ export function HeroSection({ products }: { products: CatalogProduct[] }) {
                 is measured in the headline's own size. */}
             {t.headline.map((line, i) => (
               <span key={line} className="-mb-[0.2em] block overflow-hidden pb-[0.2em]">
+                {/* Invisible word break, so the heading's text reads "горного снаряжения", not "горногоснаряжения" */}
+                {i > 0 && " "}
                 <span
                   className={cn(
                     "block transition-transform duration-[1100ms] ease-[cubic-bezier(0.19,1,0.22,1)]",
@@ -176,9 +178,13 @@ export function HeroSection({ products }: { products: CatalogProduct[] }) {
 }
 
 // Page-scroll → horizontal drift: px of slider shift per px of page scroll.
+// Gentler on touch screens, where a flick covers a lot of page at once.
 const DRIFT = 0.6;
-// Per-frame easing toward the target offset (0–1, higher = snappier).
-const EASE = 0.14;
+const DRIFT_TOUCH = 0.3;
+// Easing toward the target offset: time constant in seconds (time-based, so
+// 60 and 120 Hz screens glide the same).
+const EASE_TIME = 0.12;
+const EASE_TIME_TOUCH = 0.22;
 // Momentum after releasing a drag: per-frame velocity decay (closer to 1 =
 // longer glide) and the velocity (px/frame) below which it counts as stopped.
 const FRICTION = 0.955;
@@ -214,6 +220,10 @@ function HeroSlider({
     if (!track || !rail) return;
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const touch = window.matchMedia("(pointer: coarse)").matches;
+    const driftPerScroll = touch ? DRIFT_TOUCH : DRIFT;
+    const easeTime = touch ? EASE_TIME_TOUCH : EASE_TIME;
+    let last = 0;
     let drag = 0;
     let drift = 0;
     let x = 0;
@@ -231,26 +241,32 @@ function HeroSlider({
     };
     measure();
 
-    const tick = () => {
+    const tick = (now: number) => {
+      // Seconds since the last frame, as a count of 60fps frames for the fling
+      const dt = last ? Math.min(now - last, 64) / 1000 : 1 / 60;
+      last = now;
+      const frames = dt * 60;
       // Released with speed: keep gliding, decaying smoothly to a stop.
       if (!dragging && velocity !== 0) {
-        drag += velocity;
-        velocity *= FRICTION;
+        drag += velocity * frames;
+        velocity *= Math.pow(FRICTION, frames);
         if (Math.abs(velocity) < STOP_VELOCITY) velocity = 0;
       }
       const t = drag + drift;
-      x += (t - x) * EASE;
+      // A finger drag follows 1:1; scroll drift and the fling glide in
+      x += (t - x) * (dragging ? 1 : 1 - Math.exp(-dt / easeTime));
       if (Math.abs(t - x) < 0.1) x = t;
       const shown = w > 0 ? ((x % w) + w) % w : x;
       rail.style.transform = `translate3d(${-shown}px,0,0)`;
       raf = x === t && velocity === 0 ? 0 : requestAnimationFrame(tick);
+      if (!raf) last = 0;
     };
     const kick = () => {
       if (!raf) raf = requestAnimationFrame(tick);
     };
 
     const onScroll = (scroll: number) => {
-      drift = reduced ? 0 : scroll * DRIFT;
+      drift = reduced ? 0 : scroll * driftPerScroll;
       kick();
     };
     onScroll(lenis?.scroll ?? window.scrollY);

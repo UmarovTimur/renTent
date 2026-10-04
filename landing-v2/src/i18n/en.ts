@@ -147,7 +147,6 @@ export const en: Dictionary = {
     ],
     moodTitle: "The mountains are calling",
     moodLead: "The gear is ready to go. Pick it up on the day of the trip and return it right after the hike.",
-    related: "Also handy on the trip",
     metaTitle: (name: string) => `${name} for rent in Tashkent`,
   },
   cart: {
@@ -189,6 +188,39 @@ export const en: Dictionary = {
       comment: "Comment",
       question: "Could you check that everything is available for these dates?",
     },
+  },
+  faq: {
+    title: "FAQ",
+    tentPrices: {
+      q: "How much does it cost to rent a tent?",
+      a: (list: string) => `The price per day depends on the size: ${list}. The total is the daily price × the number of days; a weekend from Friday evening to Sunday evening counts as 2 days.`,
+    },
+    items: [
+      {
+        q: "How are rental days counted?",
+        a: `We count the hours from when you pick the gear up until you return it: every 24 hours is one day. Up to ${FREE_HOURS} hours over whole days are free, ${FREE_HOURS + 1} to ${HALF_DAY_HOURS} hours count as half a day, more as another full day. The minimum rental is 1 day.`,
+      },
+      {
+        q: "What do I need to rent gear?",
+        a: "Your passport, which stays with us as a deposit for the rental. You pay the rest of the price when you pick the gear up and get your passport back once it's returned and checked.",
+      },
+      {
+        q: "How do I book gear?",
+        a: "Message the manager on Telegram with what you need and for which dates. They'll check availability and book it with a 100,000 UZS prepayment.",
+      },
+      {
+        q: "Where do I pick up and return the gear?",
+        a: "In Tashkent. The manager agrees the pickup point and a convenient time with you on Telegram after booking.",
+      },
+      {
+        q: "Can I rent several items at once?",
+        a: "Yes, most people take a set: a tent, sleeping bags, mats and cookware. Add everything to the cart on the site — it builds the list with the total and sends it to the manager on Telegram.",
+      },
+      {
+        q: "What if the gear gets damaged?",
+        a: "From pickup until return the renter is responsible for the gear. If it breaks, gets badly soiled or is lost, the cost of repair, cleaning or replacement is covered by the renter.",
+      },
+    ],
   },
   cta: {
     title: "Message us — we'll help you choose your gear",

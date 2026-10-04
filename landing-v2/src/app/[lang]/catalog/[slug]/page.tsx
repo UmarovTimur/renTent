@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { JsonLd } from "@/components/JsonLd";
 import { ProductPage } from "@/components/product/ProductPage";
 import { CATALOG, getCatalog } from "@/data/products";
-import { LOCALES, hasLocale, productHref } from "@/i18n/config";
+import { DEFAULT_LOCALE, LOCALES, OG_LOCALES, hasLocale, productHref } from "@/i18n/config";
+import { SITE_NAME } from "@/lib/site";
+import { productJsonLd } from "@/lib/structuredData";
 import { getDictionary } from "@/i18n";
 
 // One static page per product and language; unknown slugs are a 404.
@@ -22,12 +25,19 @@ export async function generateMetadata({ params }: PageProps<"/[lang]/catalog/[s
     description: product.description,
     alternates: {
       canonical: productHref(lang, slug),
-      languages: Object.fromEntries(LOCALES.map((l) => [l, productHref(l, slug)])),
+      languages: {
+        ...Object.fromEntries(LOCALES.map((l) => [l, productHref(l, slug)])),
+        "x-default": productHref(DEFAULT_LOCALE, slug),
+      },
     },
     openGraph: {
       title: t.metaTitle(product.name),
       description: product.description,
+      url: productHref(lang, slug),
+      siteName: SITE_NAME,
+      locale: OG_LOCALES[lang],
       images: product.images.slice(0, 1),
+      type: "website",
     },
   };
 }
@@ -38,11 +48,10 @@ export default async function Page({ params }: PageProps<"/[lang]/catalog/[slug]
   const catalog = getCatalog(lang);
   const product = catalog.find((p) => p.slug === slug);
   if (!product) notFound();
-  // Same category first, then the rest of the catalog, so there are always four
-  const others = catalog.filter((p) => p.id !== product.id && p.images.length > 0);
-  const related = [
-    ...others.filter((p) => p.category === product.category),
-    ...others.filter((p) => p.category !== product.category),
-  ].slice(0, 4);
-  return <ProductPage locale={lang} product={product} related={related} />;
+  return (
+    <>
+      <JsonLd data={productJsonLd(lang, product)} />
+      <ProductPage locale={lang} product={product} others={catalog.filter((p) => p.id !== product.id)} />
+    </>
+  );
 }

@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
-import { useLenis } from "lenis/react";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/i18n/I18nProvider";
 
@@ -22,23 +21,35 @@ const BRANDS = [
 
 // Idle drift, px per second
 const BASE_SPEED = 40;
-// Extra px per second for each px/frame of page scroll speed
-const SCROLL_BOOST = 18;
-// How fast the scroll boost dies down (per 60fps frame)
-const BOOST_DECAY = 0.92;
+// Extra px/s of drift per px/s of page scroll (lower on touch screens, where
+// a flick scrolls much faster than a mouse wheel), and its ceiling
+const SCROLL_BOOST = 0.3;
+const SCROLL_BOOST_TOUCH = 0.15;
+const MAX_BOOST = 600;
+// Smoothing time constants, seconds: how fast the measured scroll speed, the
+// boost's rise and its fall, and the strip's own speed (incl. turning
+// around) follow their targets. Time-based, so 60 and 120 Hz phones match.
+const SCROLL_SMOOTHING = 0.12;
+const BOOST_RISE = 0.25;
+const BOOST_FALL = 0.8;
+const SPEED_SMOOTHING = 0.35;
+
+/** Fraction of the way to move toward a target this frame (exponential smoothing). */
+const follow = (dt: number, tau: number) => 1 - Math.exp(-dt / tau);
 
 /**
  * Endless strip of the brands we rent out: the logo row is rendered twice
  * and the track is shifted by up to one copy's width, so it loops seamlessly.
  * It drifts on its own and follows the page scroll: scrolling speeds it up,
  * and the direction flips with it — down moves the logos left, up moves
- * them right, and they keep going that way after the scroll stops. The loop
- * only runs while the strip is on screen; edges fade into the page.
+ * them right, and they keep going that way after the scroll stops. Speed,
+ * boost and direction changes are all eased, so jumpy touch scrolling never
+ * jerks the strip. The loop only runs while the strip is on screen; edges
+ * fade into the page.
  */
 export function BrandMarquee() {
   const sectionRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
-  const lenis = useLenis();
   const t = useI18n().t.brands;
 
   useEffect(() => {
@@ -55,16 +66,30 @@ export function BrandMarquee() {
     const ro = new ResizeObserver(measure);
     ro.observe(track);
 
+    const boostPerScroll = window.matchMedia("(pointer: coarse)").matches ? SCROLL_BOOST_TOUCH : SCROLL_BOOST;
     let x = 0;
     let dir = 1; // 1 = moving left (scrolled down), -1 = moving right
+    let speed = BASE_SPEED; // current signed speed, px/s
     let boost = 0;
+    let scrollSpeed = 0; // smoothed page scroll speed, px/s
+    let lastY = 0;
     let raf = 0;
     let last = 0;
+    // The page scroll is sampled once per frame rather than taken from scroll
+    // events, which arrive unevenly during touch scrolling and momentum.
     const tick = (now: number) => {
       const dt = last ? Math.min(now - last, 64) / 1000 : 0;
       last = now;
-      boost *= Math.pow(BOOST_DECAY, dt * 60);
-      x += dir * (BASE_SPEED + boost) * dt;
+      const y = window.scrollY;
+      if (dt > 0) {
+        scrollSpeed += ((y - lastY) / dt - scrollSpeed) * follow(dt, SCROLL_SMOOTHING);
+        if (Math.abs(scrollSpeed) > 30) dir = scrollSpeed > 0 ? 1 : -1;
+        const target = Math.min(Math.abs(scrollSpeed) * boostPerScroll, MAX_BOOST);
+        boost += (target - boost) * follow(dt, target > boost ? BOOST_RISE : BOOST_FALL);
+        speed += (dir * (BASE_SPEED + boost) - speed) * follow(dt, SPEED_SMOOTHING);
+      }
+      lastY = y;
+      x += speed * dt;
       if (width > 0) x = ((x % width) + width) % width;
       track.style.transform = `translate3d(${-x}px,0,0)`;
       raf = requestAnimationFrame(tick);
@@ -72,6 +97,7 @@ export function BrandMarquee() {
     const start = () => {
       if (raf) return;
       last = 0;
+      lastY = window.scrollY;
       raf = requestAnimationFrame(tick);
     };
     const stop = () => {
@@ -81,28 +107,12 @@ export function BrandMarquee() {
     const io = new IntersectionObserver(([entry]) => (entry.isIntersecting ? start() : stop()));
     io.observe(section);
 
-    // Scroll speed in px per frame, from Lenis or from native scroll deltas.
-    const onScroll = (velocity: number) => {
-      if (velocity === 0) return;
-      dir = velocity > 0 ? 1 : -1;
-      boost = Math.max(boost, Math.abs(velocity) * SCROLL_BOOST);
-    };
-    const offLenis = lenis?.on("scroll", ({ velocity }: { velocity: number }) => onScroll(velocity));
-    let lastY = window.scrollY;
-    const onNative = () => {
-      onScroll(window.scrollY - lastY);
-      lastY = window.scrollY;
-    };
-    if (!lenis) window.addEventListener("scroll", onNative, { passive: true });
-
     return () => {
       stop();
       io.disconnect();
       ro.disconnect();
-      offLenis?.();
-      window.removeEventListener("scroll", onNative);
     };
-  }, [lenis]);
+  }, []);
 
   return (
     <section ref={sectionRef} aria-label={t.label} data-header-theme="light" className="overflow-hidden bg-cream py-4 md:py-[clamp(2rem,5vh,3.5rem)]">

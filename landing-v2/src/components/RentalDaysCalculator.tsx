@@ -9,6 +9,7 @@ import { typograph } from "@/lib/typograph";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/i18n/I18nProvider";
 import type { Dictionary } from "@/i18n";
+import { formatWeekday } from "@/lib/intl";
 
 // Day bars get their own labels up to this many; longer rentals collapse into
 // one bar so the timeline stays readable.
@@ -281,7 +282,6 @@ function formatDateValue(value: string, placeholder: string) {
 function EndpointCard({ src, alt, title, moment, date, time, min, onDate, onTime, delay, className }: EndpointCardProps) {
   const { t: dict } = useI18n();
   const t = dict.calc;
-  const weekday = new Intl.DateTimeFormat(dict.intl, { weekday: "long" });
   return (
     // Mobile: photo on top, pickers below it on a plain panel (half-width
     // columns are too narrow to overlay). Desktop: the panel floats over the
@@ -297,7 +297,7 @@ function EndpointCard({ src, alt, title, moment, date, time, min, onDate, onTime
         <legend className="sr-only">{title}</legend>
         <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-2">
           <p className="font-display text-[clamp(1.1rem,1.6vw,1.5rem)] font-semibold leading-none">{title}</p>
-          <p className="min-h-[1lh] truncate font-text text-xs text-charcoal/50 md:text-sm">{moment ? weekday.format(moment) : ""}</p>
+          <p className="min-h-[1lh] truncate font-text text-xs text-charcoal/50 md:text-sm">{moment ? formatWeekday(dict.intl, moment) : ""}</p>
         </div>
         <div className="mt-2.5 grid grid-cols-1 gap-1.5 lg:mt-3 xl:grid-cols-[1fr_auto]">
           <label className={cn(fieldClass, "cursor-pointer")}>

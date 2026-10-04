@@ -7,7 +7,8 @@ import { CartProvider } from "@/components/cart/CartProvider";
 import { CartButton } from "@/components/cart/CartButton";
 import { CartDrawer } from "@/components/cart/CartDrawer";
 import { I18nProvider } from "@/i18n/I18nProvider";
-import { LOCALES, hasLocale, localeHome } from "@/i18n/config";
+import { DEFAULT_LOCALE, LOCALES, OG_LOCALES, hasLocale, localeHome } from "@/i18n/config";
+import { SITE_NAME, SITE_URL } from "@/lib/site";
 import { getDictionary } from "@/i18n";
 
 // Primary typeface for all UI and copy (covers Cyrillic).
@@ -29,10 +30,13 @@ export async function generateMetadata({ params }: LayoutProps<"/[lang]">): Prom
   return {
     title: meta.title,
     description: meta.description,
-    metadataBase: new URL("https://quechua-lookbook.com"),
+    metadataBase: new URL(SITE_URL),
     alternates: {
       canonical: localeHome(lang),
-      languages: Object.fromEntries(LOCALES.map((l) => [l, localeHome(l)])),
+      languages: {
+        ...Object.fromEntries(LOCALES.map((l) => [l, localeHome(l)])),
+        "x-default": localeHome(DEFAULT_LOCALE),
+      },
     },
     icons: {
       icon: [
@@ -44,6 +48,10 @@ export async function generateMetadata({ params }: LayoutProps<"/[lang]">): Prom
     openGraph: {
       title: meta.title,
       description: meta.ogDescription,
+      url: localeHome(lang),
+      siteName: SITE_NAME,
+      locale: OG_LOCALES[lang],
+      alternateLocale: LOCALES.filter((l) => l !== lang).map((l) => OG_LOCALES[l]),
       images: ["/seo/og.jpg"],
       type: "website",
     },

@@ -12,6 +12,7 @@ import { fuzzySearch } from "@/lib/search";
 import { useI18n } from "@/i18n/I18nProvider";
 import { productHref } from "@/i18n/config";
 import { CATEGORIES, type CatalogCategory, type CatalogProduct } from "@/data/products";
+import { formatNumber } from "@/lib/intl";
 
 
 export function ProductCatalog({ products }: { products: CatalogProduct[] }) {
@@ -53,7 +54,9 @@ export function ProductCatalog({ products }: { products: CatalogProduct[] }) {
           ref={filterRef}
           className="mt-[clamp(1.5rem,3vw,2.5rem)] flex scroll-mt-24 flex-col gap-3 lg:flex-row lg:items-center lg:justify-between"
         >
-          <div role="group" aria-label={t.filterLabel} className="flex flex-wrap gap-2">
+          {/* min-w-0 + the right side not shrinking: with longer labels (Uzbek)
+              the chips wrap instead of pushing the search off the edge */}
+          <div role="group" aria-label={t.filterLabel} className="flex min-w-0 flex-wrap gap-2">
           {options.map((c) => (
             <button
               key={c}
@@ -70,7 +73,7 @@ export function ProductCatalog({ products }: { products: CatalogProduct[] }) {
           ))}
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 lg:shrink-0">
             <FullPriceButton />
             <label className="relative flex min-w-0 flex-1 items-center lg:w-[18rem] lg:flex-none">
               <span className="sr-only">{t.search}</span>
@@ -220,7 +223,7 @@ function ProductCard({
           </Link>
         </h3>
         <p className="whitespace-nowrap font-text text-[0.8rem] tabular-nums sm:text-[clamp(0.95rem,1.2vw,1.15rem)]">
-          {new Intl.NumberFormat(intl).format(product.price)} {t.currency}
+          {formatNumber(intl, product.price)} {t.currency}
           {product.priceNote && <span className="ml-1 text-charcoal/55">/ {product.priceNote}</span>}
         </p>
       </div>

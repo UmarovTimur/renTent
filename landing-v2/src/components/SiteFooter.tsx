@@ -5,7 +5,14 @@ import { TermsDialog } from "@/components/TermsDialog";
 import { cn } from "@/lib/utils";
 import { HandArrowSmall, InstagramIcon, TelegramIcon } from "@/components/icons";
 import { Phone } from "lucide-react";
-import { MANAGER_PHONE, MANAGER_PHONE_HREF, MANAGER_TELEGRAM, PICKUP_COORDS } from "@/lib/contacts";
+import {
+  INSTAGRAM_URL,
+  MANAGER_PHONE,
+  MANAGER_PHONE_HREF,
+  MANAGER_TELEGRAM,
+  PICKUP_COORDS,
+  TELEGRAM_CHANNEL_URL,
+} from "@/lib/contacts";
 import type { Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n";
 
@@ -14,14 +21,14 @@ import { getDictionary } from "@/i18n";
 const SOCIALS = [
   {
     label: "Instagram",
-    href: "https://www.instagram.com/rentent.uz",
+    href: INSTAGRAM_URL,
     Icon: InstagramIcon,
     brand:
       "bg-[radial-gradient(circle_at_30%_107%,#fdf497_0%,#fdf497_5%,#fd5949_45%,#d6249f_60%,#285aeb_90%)]",
   },
   {
     label: "Telegram",
-    href: "https://t.me/renTent_uz",
+    href: TELEGRAM_CHANNEL_URL,
     Icon: TelegramIcon,
     brand: "bg-[#26a5e4]",
   },

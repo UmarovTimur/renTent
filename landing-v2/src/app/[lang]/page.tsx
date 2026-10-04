@@ -8,11 +8,14 @@ import { BrandMarquee } from "@/components/BrandMarquee";
 import { StepsSection } from "@/components/StepsSection";
 import { PricingSection } from "@/components/PricingSection";
 import { CtaSection } from "@/components/CtaSection";
+import { FaqSection } from "@/components/FaqSection";
+import { JsonLd } from "@/components/JsonLd";
 // import { BrandStory } from "@/components/BrandStory";
 import { SiteFooter } from "@/components/SiteFooter";
 import { notFound } from "next/navigation";
 import { getCatalog } from "@/data/products";
 import { hasLocale } from "@/i18n/config";
+import { businessJsonLd } from "@/lib/structuredData";
 // import { CHAPTERS } from "@/data/chapters";
 
 export default async function Home({ params }: PageProps<"/[lang]">) {
@@ -21,6 +24,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
   const products = getCatalog(lang);
   return (
     <>
+      <JsonLd data={businessJsonLd(lang)} />
       <Preloader />
       <SiteHeader />
       <main>
@@ -35,6 +39,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
         ))} */}
         <BrandMarquee />
         <ProductCatalog products={products} />
+        <FaqSection locale={lang} />
         <CtaSection locale={lang} />
         {/* Hidden: brand-story narrative copy, kept for reuse */}
         {/* <BrandStory /> */}

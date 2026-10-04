@@ -1,6 +1,7 @@
 import { MANAGER_TELEGRAM } from "@/lib/contacts";
 import type { Dictionary } from "@/i18n";
 import type { CatalogProduct } from "@/data/products";
+import { formatMoment, formatNumber } from "@/lib/intl";
 
 export interface OrderLine {
   product: CatalogProduct;
@@ -30,20 +31,13 @@ export function buildOrderMessage(
   comment: string,
 ): string {
   const m = t.cart.message;
-  const money = (n: number) => `${new Intl.NumberFormat(t.intl).format(n)} ${t.catalog.currency}`;
-  const when = new Intl.DateTimeFormat(t.intl, {
-    weekday: "short",
-    day: "numeric",
-    month: "long",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+  const money = (n: number) => `${formatNumber(t.intl, n)} ${t.catalog.currency}`;
 
   const out = [m.greeting, ""];
   if (dates) {
     out.push(
-      `📅 ${m.pickup}: ${when.format(dates.pickup)}`,
-      `📅 ${m.giveBack}: ${when.format(dates.giveBack)}`,
+      `📅 ${m.pickup}: ${formatMoment(t.intl, dates.pickup)}`,
+      `📅 ${m.giveBack}: ${formatMoment(t.intl, dates.giveBack)}`,
       `⏱ ${m.term}: ${t.calc.formatDays(dates.days)}`,
       "",
     );

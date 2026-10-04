@@ -24,13 +24,13 @@ export function ProductTopBar({ product }: { product: CatalogProduct }) {
   useEffect(() => skipPreloader(), []);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 mx-auto flex w-full max-w-[80rem] items-center justify-between gap-3 px-4 py-4 md:px-8">
+    <header className="fixed inset-x-0 top-0 z-50 flex items-center justify-between gap-3 px-4 py-4 md:px-6 md:py-5">
       <Link href={`${localeHome(locale)}#catalog`} className={PILL}>
         <ArrowLeft aria-hidden strokeWidth={2.5} className="size-4 opacity-70" />
         {t.product.back}
       </Link>
 
-      <Link href={localeHome(locale)} aria-label="rentTent" className="absolute left-1/2 -translate-x-1/2">
+      <Link href={localeHome(locale)} aria-label="rentTent" className="absolute left-1/2 -translate-x-1/2 max-md:hidden">
         <LogoIcon className="h-[1.125rem] w-auto" />
       </Link>
 

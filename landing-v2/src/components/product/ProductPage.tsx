@@ -1,16 +1,17 @@
 import Image from "next/image";
-import Link from "next/link";
 import { Check, Download } from "lucide-react";
 import { AddToCart } from "@/components/cart/AddToCart";
 import { CtaSection } from "@/components/CtaSection";
+import { ProductCatalog } from "@/components/ProductCatalog";
 import { HandArrowSmall } from "@/components/icons";
 import { Reveal } from "@/components/Reveal";
 import { SiteFooter } from "@/components/SiteFooter";
 import { ProductGallery } from "@/components/product/ProductGallery";
 import { ProductTopBar } from "@/components/product/ProductTopBar";
-import { productHref, type Locale } from "@/i18n/config";
+import type { Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n";
 import type { CatalogCategory, CatalogProduct } from "@/data/products";
+import { formatNumber } from "@/lib/intl";
 
 // Content width of the product details (the bands below run edge to edge, like the home page)
 const CONTAINER = "mx-auto w-full max-w-[80rem] px-4 md:px-8";
@@ -27,22 +28,24 @@ const MOOD_PHOTO: Record<CatalogCategory, string> = {
 /**
  * Product page: a compact sticky gallery on the left (photos fitted whole,
  * opening the zoomable lightbox), price, booking and how-to videos on the
- * right (within a fixed content width), then related gear and a full-bleed
- * mountain band across the whole screen.
+ * right (within a fixed content width), then the rest of the catalog (the
+ * home page's filterable grid) and a full-bleed mountain band across the
+ * whole screen.
  */
 export function ProductPage({
   locale,
   product,
-  related,
+  others,
 }: {
   locale: Locale;
   product: CatalogProduct;
-  related: CatalogProduct[];
+  /** every other product in the catalog */
+  others: CatalogProduct[];
 }) {
   const dict = getDictionary(locale);
   const t = dict.product;
   const c = dict.catalog;
-  const price = (p: CatalogProduct) => `${new Intl.NumberFormat(dict.intl).format(p.price)} ${c.currency}`;
+  const price = (p: CatalogProduct) => `${formatNumber(dict.intl, p.price)} ${c.currency}`;
 
   return (
     <>
@@ -50,26 +53,28 @@ export function ProductPage({
       <main className="bg-cream text-charcoal">
         <section className={`${CONTAINER} pb-16 pt-24 md:pb-[12vh] md:pt-28`}>
           {/* The gallery column is exactly as wide as its photo, the text takes the rest */}
-          <div className="grid gap-8 lg:grid-cols-[auto_minmax(0,1fr)] lg:gap-[clamp(2rem,4vw,4rem)]">
+          <div className="grid gap-6 md:gap-8 lg:grid-cols-[auto_minmax(0,1fr)] lg:gap-[clamp(2rem,4vw,4rem)]">
             <ProductGallery product={product} />
 
+            {/* Vertical rhythm: tight inside a group (category, name, price),
+                wider between groups (description, cart, perks, videos) */}
             <div>
-              <p className="font-text text-sm uppercase tracking-[0.12em] text-charcoal/55">
+              <p className="font-text text-sm uppercase leading-none tracking-[0.12em] text-charcoal/55">
                 {c.categories[product.category]}
               </p>
-              <h1 className="mt-3 font-display text-[clamp(2.4rem,5vw,4.75rem)] font-semibold leading-[0.95] tracking-[-0.03em]">
+              <h1 className="mt-2.5 font-display md:mt-3 text-[clamp(2.4rem,5vw,4.75rem)] font-semibold leading-[0.95] tracking-[-0.03em]">
                 {product.name}
               </h1>
-              <p className="mt-5 font-display text-[clamp(1.4rem,2vw,2rem)] tabular-nums">
+              <p className="mt-3 font-display text-[clamp(1.4rem,2vw,2rem)] leading-tight tabular-nums md:mt-4">
                 {price(product)}
                 <span className="ml-2 text-charcoal/50">/ {product.priceNote ?? c.perDay}</span>
               </p>
-              <p className="mt-6 max-w-[32rem] font-text text-[clamp(1rem,1.15vw,1.15rem)] leading-relaxed text-charcoal/75">
+              <p className="mt-4 max-w-[32rem] font-text md:mt-5 text-[clamp(1rem,1.15vw,1.15rem)] leading-relaxed text-charcoal/75">
                 {product.description}
               </p>
 
               {/* Cart: the button with a handwritten nudge pointing at it */}
-              <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3">
+              <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 md:mt-8">
                 <AddToCart product={product} />
                 <span className="q-hand flex items-center gap-1 text-[1.6rem] leading-none">
                   <HandArrowSmall className="h-9 w-8 -scale-x-100 rotate-[200deg]" />
@@ -77,21 +82,21 @@ export function ProductPage({
                 </span>
               </div>
 
-              <ul className="mt-10 flex flex-col border-t border-charcoal/15">
+              <ul className="mt-8 flex flex-col border-t md:mt-10 border-charcoal/15">
                 {t.perks.map((perk) => (
                   <li
                     key={perk}
-                    className="flex items-start gap-3 border-b border-charcoal/15 py-4 font-text text-[0.95rem] text-charcoal/80"
+                    className="flex items-start gap-3 border-b border-charcoal/15 py-3.5 font-text text-[0.95rem] leading-snug text-charcoal/80"
                   >
-                    <Check aria-hidden className="mt-0.5 size-4 shrink-0" strokeWidth={2.5} />
+                    <Check aria-hidden className="mt-[0.1em] size-4 shrink-0" strokeWidth={2.5} />
                     {perk}
                   </li>
                 ))}
               </ul>
 
               {product.videos && product.videos.length > 0 && (
-                <section className="mt-10">
-                  <h2 className="font-display text-xl font-medium">{c.videos}</h2>
+                <section className="mt-10 md:mt-12">
+                  <h2 className="font-display text-xl font-medium leading-tight">{c.videos}</h2>
                   <ul className="mt-4 flex flex-col gap-6">
                     {product.videos.map((video) => (
                       <li key={video.src} className="flex flex-col gap-3">
@@ -122,38 +127,8 @@ export function ProductPage({
           </div>
         </section>
 
-        {related.length > 0 && (
-          <section className="px-4 py-16 md:px-[1.6rem] md:py-[12vh]">
-            <Reveal as="h2" className="font-display text-[clamp(2rem,4vw,3.75rem)] font-semibold leading-none tracking-[-0.02em]">
-              {t.related}
-            </Reveal>
-            <div className="mt-8 grid grid-cols-2 gap-x-3 gap-y-8 sm:gap-x-[clamp(1rem,2vw,2rem)] lg:grid-cols-4">
-              {related.map((p, i) => (
-                <Reveal key={p.id} delay={((i % 3) + 1) as 1 | 2 | 3}>
-                  <Link href={productHref(locale, p.slug)} className="group flex flex-col">
-                    <span className="relative aspect-[2/3] overflow-hidden rounded-xl bg-[#dcd7ce] sm:rounded-[1.25rem]">
-                      <Image
-                        src={p.images[0]}
-                        alt={p.name}
-                        fill
-                        sizes="(max-width: 1024px) 48vw, 23vw"
-                        className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-[1.04]"
-                      />
-                    </span>
-                    <span className="mt-3 flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-3">
-                      <span className="font-display text-[0.95rem] font-medium leading-tight sm:text-[clamp(1.05rem,1.4vw,1.35rem)]">
-                        {p.name}
-                      </span>
-                      <span className="whitespace-nowrap font-text text-[0.8rem] tabular-nums sm:text-[clamp(0.95rem,1.2vw,1.15rem)]">
-                        {price(p)}
-                      </span>
-                    </span>
-                  </Link>
-                </Reveal>
-              ))}
-            </div>
-          </section>
-        )}
+        {/* The whole catalog with its filters and search, as on the home page */}
+        <ProductCatalog products={others} />
 
         {/* Full-bleed mood band */}
         <section data-header-theme="dark" className="relative flex min-h-[80svh] items-end justify-center overflow-hidden text-center text-cream">
